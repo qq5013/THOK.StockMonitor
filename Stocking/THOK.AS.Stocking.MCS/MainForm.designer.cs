@@ -77,7 +77,6 @@
             // monitorView
             // 
             this.monitorView.BackColor = System.Drawing.SystemColors.Highlight;
-            this.monitorView.BackgroundImage = global::THOK.AS.Stocking.MCS.Properties.Resources.S1_000;
             this.monitorView.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.monitorView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.monitorView.Location = new System.Drawing.Point(0, 0);
