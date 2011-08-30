@@ -59,5 +59,12 @@ namespace THOK.AS.Stocking.MCS.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap S1_0002 {
+            get {
+                object obj = ResourceManager.GetObject("S1.0002", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
