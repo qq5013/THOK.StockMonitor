@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Config>
+  <UDPServer IP="127.0.0.1" Port="7000" />
+  <Parse Type="THOK.MCP.Service.UDP.dll, THOK.MCP.Service.UDP.MessageParse" />
+</Config>

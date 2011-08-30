@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' ?>
+<Config>
+	<OPCServer ConnectionString="OPC.SimaticNET">
+		<OPCGroup GroupName="DefaultGroup" GroupString="S7:[@LOCALSERVER]" UpdateRate="350">
+			<OPCItem ItemName="02_1" ClientHandler="1" OPCItemName="DB1,INT0,1"  ItemType="READ" />
+			<OPCItem ItemName="02_2" ClientHandler="2" OPCItemName="DB1,INT2,1"  ItemType="READ" />			
+		</OPCGroup>
+	</OPCServer>
+</Config>
