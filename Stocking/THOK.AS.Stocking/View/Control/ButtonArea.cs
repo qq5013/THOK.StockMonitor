@@ -9,7 +9,6 @@ using THOK.MCP;
 using THOK.MCP.View;
 using THOK.Util;
 using THOK.AS.Stocking.Dao;
-using THOK.AS.Stocking.Process;
 
 namespace THOK.AS.Stocking.View
 {
@@ -57,17 +56,16 @@ namespace THOK.AS.Stocking.View
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            //DownloadData();
+            DownloadData();
             try
             {
                 Context.ProcessDispatcher.WriteToProcess("LEDProcess", "Refresh", null);
-
+                Context.ProcessDispatcher.WriteToProcess("LedStateProcess", "Refresh", null);
             }
             catch (Exception ex) 
             {
                 Logger.Error(ex.Message);
             }
-
         }
 
         private void btnUpload_Click(object sender, EventArgs e)
@@ -81,15 +79,16 @@ namespace THOK.AS.Stocking.View
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            Context.Processes["DataRequestProcess"].Resume();
+            Context.Processes["OrderDataStateProcess"].Resume();
             Context.ProcessDispatcher.WriteToProcess("LEDProcess", "Refresh", null);
+            Context.ProcessDispatcher.WriteToProcess("LedStateProcess", "Refresh", null);
             SwitchStatus(true);
             timer1.Enabled = true;
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            Context.Processes["DataRequestProcess"].Suspend();
+            Context.Processes["OrderDataStateProcess"].Suspend();
             SwitchStatus(false);
             timer1.Enabled = false;
         }

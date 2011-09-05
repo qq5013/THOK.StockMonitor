@@ -4,10 +4,11 @@ using System.Text;
 
 using THOK.MCP;
 using THOK.Util;
+using THOK.AS.Stocking.StateManageProcess.Dao;
 
-namespace THOK.AS.Stocking.StateManage
+namespace THOK.AS.Stocking.StateManageProcess
 {
-    class OrderProcess:AbstractProcess
+    class OrderDataStateProcess:AbstractProcess
     {
         /// <summary>
         /// 状态管理器列表
@@ -21,7 +22,7 @@ namespace THOK.AS.Stocking.StateManage
                 {
                     if (!orderDataStateManages.ContainsKey(stateItemCode))
                     {
-                        orderDataStateManages[stateItemCode] = new OrderDataStateManage(stateItemCode);
+                        orderDataStateManages[stateItemCode] = new OrderDataStateManage(stateItemCode,this.Context.ProcessDispatcher);
                     }
                 }
             }
@@ -32,46 +33,48 @@ namespace THOK.AS.Stocking.StateManage
         {
             /*
              * stateItem.Name ： 消息来源 
-             * stateItem.ItemName ： 
-             *      对应 (1).StateItemCode_MoveNext /? 来自PLC数据单元，请求写订单，PLC将用当前经过件烟流水号，请求写订单数据！
-             *           (2).StateItemCode_MoveTo   /? 来自PLC数据单元，请求较正数据，PLC将用当前经过件烟流水号，请求较正数据！
+             * stateItem.ItemName ：
+             *      对应 (0)Init                   ： 初始化（下载新数据时的初始化！）
+             *           (1)StateItemCode_OrderDataMoveNext ： 来自PLC数据单元，请求写订单，PLC将用当前经过件烟流水号，请求写订单数据！
+             *           (2)StateItemCode_OrderDataMoveTo   ： 来自PLC数据单元，请求较正数据，PLC将用当前经过件烟流水号，请求较正数据！
              *           
              * stateItem.State  
              */
             try
             {
-                if (stateItem.ItemName == "Init")
-                {
-                    foreach (OrderDataStateManage orderDataStateManage in orderDataStateManages.Values)
-                    {
-                        orderDataStateManage.MoveTo(1, dispatcher);
-                    }
-                    return;
-                }
-
                 using (PersistentManager pm = new PersistentManager())
                 {
+                    if (stateItem.ItemName == "Init")
+                    {
+                        foreach (OrderDataStateManage orderDataStateManageItem in orderDataStateManages.Values)
+                        {
+                            orderDataStateManageItem.MoveTo(1);
+                        }
+                        return;
+                    }
+
                     string stateItemCode = stateItem.ItemName.Split('_')[0];
                     string action = stateItem.ItemName.Split('_')[1];
                     OrderDataStateManage orderDataStateManage = GetStateManage(stateItemCode);
                     int index = 0;
+
                     switch (action)
                     {
-                        case "OrderMoveNext":
+                        case "OrderDataMoveNext":
                             index = Convert.ToInt32(THOK.MCP.ObjectUtil.GetObject(stateItem.State));
                             if (index != 0 && orderDataStateManage.Check(index))
                             {
-                                if (orderDataStateManage.MoveNext())
+                                if (orderDataStateManage.WriteToPlc())
                                 {
-                                    orderDataStateManage.WriteToPlc(dispatcher);
+                                    //todo;
                                 }
                             }
                             break;
-                        case "OrderMoveTo":
+                        case "OrderDataMoveTo":
                             index = Convert.ToInt32(THOK.MCP.ObjectUtil.GetObject(stateItem.State));
                             if (index != 0)
                             {
-                                orderDataStateManage.MoveTo(index, dispatcher);
+                                orderDataStateManage.MoveTo(index);
                             }
                             break;
                     }

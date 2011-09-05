@@ -107,16 +107,13 @@
     <Compile Include="Dao\StockOutDao.cs" />
     <Compile Include="Dao\SupplyDao.cs" />
     <Compile Include="Parameter.cs" />
-    <Compile Include="Process\DataReuqestProcess.cs" />
-    <Compile Include="Process\SortStateProcess.cs" />
-    <Compile Include="Process02\DynamicShowProcess.cs" />
-    <Compile Include="Process\LEDProcess.cs" />
-    <Compile Include="Process\ScanProcess.cs" />
-    <Compile Include="Process\StockInRequestProcess.cs" />
-    <Compile Include="Process02\SupplyCarRequestProcess.cs" />
-    <Compile Include="Process02\SupplyRefreshDataRequestProcess.cs" />
-    <Compile Include="Process02\ViewProcess.cs" />
-    <Compile Include="Process\SupplyRequestProcess.cs">
+    <Compile Include="StateManageProcess\ScannerStateProcess.cs" />
+    <Compile Include="StockOutProcess\DataReuqestProcess.cs" />
+    <Compile Include="StockOutProcess\SortStateProcess.cs" />
+    <Compile Include="StockInProcess\LEDProcess.cs" />
+    <Compile Include="StockInProcess\ScanProcess.cs" />
+    <Compile Include="StockInProcess\StockInRequestProcess.cs" />
+    <Compile Include="StockOutProcess\SupplyRequestProcess.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,7 +127,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RefreshData.cs" />
     <Compile Include="Report\AS_SC_CHANNELUSED.cs">
       <DependentUpon>AS_SC_CHANNELUSED.xsd</DependentUpon>
     </Compile>
@@ -145,23 +141,22 @@
       <DependentUpon>SortChannelReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StateManage\LedProcess.cs" />
-    <Compile Include="StateManage\LedStateManage.cs" />
-    <Compile Include="StateManage\OrderDataStateManage.cs" />
-    <Compile Include="StateManage\OrderProcess.cs" />
-    <Compile Include="StateManage\ScannerProcess.cs" />
-    <Compile Include="StateManage\ScannerStateManage.cs" />
-    <Compile Include="Util\BarCode.cs" />
-    <Compile Include="Util\Character.cs" />
-    <Compile Include="Util\EQ2008_DataStruct.cs" />
+    <Compile Include="StateManageProcess\LedStateProcess.cs" />
+    <Compile Include="StateManageProcess\Dao\LedStateManage.cs" />
+    <Compile Include="StateManageProcess\Dao\OrderDataStateManage.cs" />
+    <Compile Include="StateManageProcess\OrderDataStateProcess.cs" />
+    <Compile Include="StateManageProcess\Dao\ScannerStateManage.cs" />
+    <Compile Include="Util\ZebraPrinter\BarCode.cs" />
+    <Compile Include="Util\ZebraPrinter\Character.cs" />
+    <Compile Include="Util\LED2008\EQ2008_DataStruct.cs" />
     <Compile Include="Util\LogFile.cs" />
     <Compile Include="Util\GraphicsUtil.cs" />
-    <Compile Include="Util\LED2008.cs" />
-    <Compile Include="Util\LedCollection.cs" />
-    <Compile Include="Util\LEDUtil.cs" />
-    <Compile Include="Util\RawPrinterHelper.cs" />
+    <Compile Include="Util\LED2008\LED2008.cs" />
+    <Compile Include="Util\LED2008\LedCollection.cs" />
+    <Compile Include="Util\LED2008\LEDUtil.cs" />
+    <Compile Include="Util\ZebraPrinter\RawPrinterHelper.cs" />
     <Compile Include="Util\SerializableUtil.cs" />
-    <Compile Include="Util\ZebraPrinter.cs" />
+    <Compile Include="Util\ZebraPrinter\ZebraPrinter.cs" />
     <Compile Include="View\Control\ButtonArea.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -185,12 +180,6 @@
     </Compile>
     <Compile Include="View\Form\ChannelQueryForm.designer.cs">
       <DependentUpon>ChannelQueryForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View2\MaxLEDForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View2\MaxLEDForm.Designer.cs">
-      <DependentUpon>MaxLEDForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Form\ParameterForm.cs">
       <SubType>Form</SubType>
@@ -216,12 +205,6 @@
     <Compile Include="View\Form\SortChannelPrintForm.designer.cs">
       <DependentUpon>SortChannelPrintForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View2\SortingStatus.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View2\SortingStatus.designer.cs">
-      <DependentUpon>SortingStatus.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\Form\StockOutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -233,13 +216,6 @@
     </Compile>
     <Compile Include="View\Form\StockOutTaskForm.Designer.cs">
       <DependentUpon>StockOutTaskForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SortingLedParameter.cs" />
-    <Compile Include="View2\SortingLedParameterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View2\SortingLedParameterForm.designer.cs">
-      <DependentUpon>SortingLedParameterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Dialog\PrintSelectDialog.cs">
       <SubType>Form</SubType>
@@ -286,10 +262,6 @@
       <DependentUpon>ChannelQueryForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="View2\MaxLEDForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MaxLEDForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="View\Form\ParameterForm.resx">
       <DependentUpon>ParameterForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -306,10 +278,6 @@
       <DependentUpon>SortChannelPrintForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="View2\SortingStatus.resx">
-      <DependentUpon>SortingStatus.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="View\Form\StockOutForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StockOutForm.cs</DependentUpon>
@@ -317,10 +285,6 @@
     <EmbeddedResource Include="View\Form\StockOutTaskForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StockOutTaskForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View2\SortingLedParameterForm.resx">
-      <DependentUpon>SortingLedParameterForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Dialog\PrintSelectDialog.resx">
       <DependentUpon>PrintSelectDialog.cs</DependentUpon>
@@ -372,9 +336,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="StateManage\Dao\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

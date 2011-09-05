@@ -21,7 +21,7 @@
 		<Service Name="SortPLC_01" Type="THOK.MCP.Service.Siemens.dll, THOK.MCP.Service.Siemens.OPCService" ConfigFile="SortPLC_01.xml" />
 		<Service Name="SortPLC_02" Type="THOK.MCP.Service.Siemens.dll, THOK.MCP.Service.Siemens.OPCService" ConfigFile="SortPLC_02.xml" />
 		<Service Name="UDPService" Type="THOK.MCP.Service.UDP.dll, THOK.MCP.Service.UDP.UDPService" ConfigFile="UDP.xml" />
-		<Service Name="SickScan" Type="THOK.MCP.Service.Sick.dll, THOK.MCP.Service.Sick.SickService" ConfigFile="Scanner.xml" />
+		<Service Name="Scanner" Type="THOK.MCP.Service.Sick.dll, THOK.MCP.Service.Sick.SickService" ConfigFile="Scanner.xml" />
 	</Services>
 	<Processes>
 		<Process Name="SortStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.Process.SortStateProcess">
@@ -37,21 +37,9 @@
 			<Item ServiceName="StockPLC_01" ItemName="DataRequest" />
 		</Process>
 		<Process Name="ScanProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.Process.ScanProcess">
-			<Item ServiceName="SickScan" ItemName="01" Desc="扫描器主站01" />
-			<Item ServiceName="SickScan" ItemName="02" Desc="扫描器主站02" />
-			<Item ServiceName="SickScan" ItemName="03" Desc="扫描器主站03" />
-			<Item ServiceName="SickScan" ItemName="04" Desc="扫描器主站04" />
-			<Item ServiceName="SickScan" ItemName="05" Desc="扫描器主站05" />
+			<Item ServiceName="Scanner" ItemName="01" Desc="扫描器主站01" />
 			<Item ServiceName="StockPLC_01" ItemName="ErrTag_01" Desc="扫描器主站01" />
 			<Item ServiceName="StockPLC_01" ItemName="ErrReset_01" Desc="扫描器主站01" />
-			<Item ServiceName="StockPLC_02" ItemName="Show_02" Desc="扫描器主站02" />
-			<Item ServiceName="StockPLC_02" ItemName="Show_03" Desc="扫描器主站03" />
-			<Item ServiceName="StockPLC_02" ItemName="Show_04" Desc="扫描器主站04" />
-			<Item ServiceName="StockPLC_02" ItemName="Show_05" Desc="扫描器主站05" />
-			<Item ServiceName="StockPLC_02" ItemName="ReScanOk_02" Desc="扫描器主站02" />
-			<Item ServiceName="StockPLC_02" ItemName="ReScanOk_03" Desc="扫描器主站03" />
-			<Item ServiceName="StockPLC_02" ItemName="ReScanOk_04" Desc="扫描器主站04" />
-			<Item ServiceName="StockPLC_02" ItemName="ReScanOk_05" Desc="扫描器主站05" />
 		</Process>
 		<Process Name="StockInRequestProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.Process.StockInRequestProcess" />
 		<!--<Process Name="LEDProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.Process.LEDProcess" />-->
@@ -59,19 +47,22 @@
 			<Item ServiceName="StockPLC_02" ItemName="DynamicShow" />
 		</Process>
 		<Process Name="ViewProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.Process.ViewProcess" />
+		
 		<!--状态管理器添加-->
-		<Process Name="OrderProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManage.OrderProcess">
-			<Item ServiceName="StockPLC_02" ItemName="01_OrderMoveNext"/>
-			<Item ServiceName="StockPLC_02" ItemName="01_OrderMoveTo"/>
-		</Process>
+		<Process Name="OrderDataProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManage.OrderDataProcess">
+			<Item ServiceName="StockPLC_02" ItemName="01_OrderDataMoveNext"/>
+			<Item ServiceName="StockPLC_02" ItemName="01_OrderDataMoveTo"/>
+		</Process>		
 		<Process Name="LedProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManage.LedProcess">
 			<Item ServiceName="StockPLC_02" ItemName="01_LedMoveNext"/>
 			<Item ServiceName="StockPLC_02" ItemName="01_LedMoveTo"/>
+			<Item ServiceName="StockPLC_02" ItemName="01_LedShowData"/>
 		</Process>
 		<Process Name="ScannerProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManage.ScannerProcess">
-			<Item ServiceName="StockPLC_02" ItemName="01_MoveNext"/>
-			<Item ServiceName="StockPLC_02" ItemName="01_MoveTo"/>
+			<Item ServiceName="StockPLC_02" ItemName="01_ScannerMoveNext"/>
+			<Item ServiceName="StockPLC_02" ItemName="01_ScannerMoveTo"/>
+			<Item ServiceName="StockPLC_02" ItemName="01_ScannerShowData"/>
+			<Item ServiceName="Scanner" ItemName="02" Desc="扫描器主站02" />
 		</Process>
-
 	</Processes>
 </Configuration>

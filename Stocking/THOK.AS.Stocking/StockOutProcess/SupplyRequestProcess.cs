@@ -6,7 +6,7 @@ using THOK.MCP;
 using THOK.Util;
 using THOK.AS.Stocking.Dao;
 
-namespace THOK.AS.Stocking.Process
+namespace THOK.AS.Stocking.StockOutProcess.Process
 {
     public class SupplyRequestProcess: AbstractProcess
     {
@@ -110,7 +110,7 @@ namespace THOK.AS.Stocking.Process
                             result = true;
 
                             Logger.Info("生产第一批次出库任务成功");
-                            WriteToProcess("LEDProcess", "Refresh_02", null);
+                            WriteToProcess("LedStateProcess", "Refresh", null);
                         }
                         catch (Exception e)
                         {
@@ -164,7 +164,7 @@ namespace THOK.AS.Stocking.Process
                                 result = true;
 
                                 Logger.Info("生成出库任务成功");
-                                WriteToProcess("LEDProcess", "Refresh_02", null);
+                                WriteToProcess("LedStateProcess", "Refresh", null);
                             }
                             catch (Exception e)
                             {

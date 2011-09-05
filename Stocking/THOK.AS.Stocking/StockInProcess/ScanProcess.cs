@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Data;
 using System.Windows.Forms;
-using THOK.AS.Stocking.Dao;
-using THOK.AS.Stocking.Util;
 using THOK.MCP;
 using THOK.Util;
+using THOK.AS.Stocking.Dao;
 
-namespace THOK.AS.Stocking.Process
+namespace THOK.AS.Stocking.StockInProcess.Process
 {
-    public class Scan_O1_Process : AbstractProcess
+    public class ScanProcess : AbstractProcess
     {      
         [Serializable]
         public class SerializableScannerParameters
@@ -54,12 +54,12 @@ namespace THOK.AS.Stocking.Process
 
             private void Serialize()
             {
-                SerializableUtil.Serialize(true, @".\Scan_O1_ProcessParameters.sl", this);
+                Util.SerializableUtil.Serialize(true, @".\SerializableScannerParameters.sl", this);
             }
 
             public static SerializableScannerParameters Deserialize()
             {
-                return SerializableUtil.Deserialize<SerializableScannerParameters>(true, @".\Scan_O1_ProcessParameters.sl"); 
+                return Util.SerializableUtil.Deserialize<SerializableScannerParameters>(true, @".\SerializableScannerParameters.sl"); 
             }
 
             public void Init()
@@ -69,99 +69,70 @@ namespace THOK.AS.Stocking.Process
             }
         }
 
+        private string scan = "";
         private SerializableScannerParameters scannerParameters = new SerializableScannerParameters();
+        public static bool isProcessingError = false;
 
         public override void Initialize(Context context)
         {
             base.Initialize(context);
-            scannerParameters = SerializableScannerParameters.Deserialize();
+            //scannerParameters = SerializableScannerParameters.Deserialize();
         }
 
-        private string scan = "01";
-        private bool isProcessingError = false;
-        private int processingOrderNo = 0;
         protected override void StateChanged(StateItem stateItem, IProcessDispatcher dispatcher)
         {
             /*  处理事项：
-             *  stateItem.Name ： "" - 主动消息，SickScan - 扫码器消息， StockPLC_01 - 叠垛缓存线PLC消息
              *  stateItem.ItemName ：00 初始化扫码器参数， 01~05 分别对应5个扫码器，进行处理。
              *  stateItem.State ：参数。
-             *      Barcode：条码/NOREAD/RESCAN_OK      
+             *      barcode：条码/NOREAD/RESCAN_OK      
              *      OrderNo：当前件烟顺序号（故障恢复时须带本参数其他不需要）
             */
 
             try
             {
+                Dictionary<string, string> parameters = null;
                 string scannerCode = "";
                 string barcode = "";
                 int orderNo = 0;
-
                 switch (stateItem.Name)
                 {
                     case "":
-                        switch (stateItem.ItemName)
+                        if (stateItem.ItemName == "ErrReset")
                         {
-                            case "Init":
-                                scannerParameters.Init();
-                                return;
-                            case "01":
-                                scannerCode = stateItem.ItemName;
-                                if (stateItem.State != null && stateItem.State is Dictionary<string, string>)
-                                {
-                                    barcode = ((Dictionary<string, string>)stateItem.State)["barcode"];
-                                    if (barcode == "NOREAD")
-                                    {
-                                        Logger.Error(string.Format("{0} 号条码扫描处理失败！详情：未扫到条码！", scannerCode));
-                                        return;
-                                    }
-                                    if (processingOrderNo == (scannerParameters.GetParameter(scannerCode, "OrderNo") != null ? (int)scannerParameters.GetParameter(scannerCode, "OrderNo") : 0) + 1)
-                                    {
-                                        processingOrderNo = 0;
-                                        Scanner_Process_StockIn(scannerCode, barcode);
-                                    } 
-                                }
-                                return;
-                            default:
-                                return;
+                            isProcessingError = false;
+                            return;
                         }
+
+                        scannerCode = stateItem.ItemName;
+                        if (stateItem.State != null && stateItem.State is Dictionary<string, string>)
+                        {
+                            parameters = (Dictionary<string, string>)stateItem.State;
+                            barcode = parameters["barcode"];
+                        }
+                        break;
                     case "SickScan":
-                        switch (stateItem.ItemName)
-                        {
-                            case "01":
-                                scannerCode = stateItem.ItemName;
-                                if (stateItem.State != null && stateItem.State is Dictionary<string, string>)
-                                {
-                                    barcode = ((Dictionary<string, string>)stateItem.State)["barcode"];
-                                    if (barcode == "NOREAD")
-                                    {
-                                        Logger.Error(string.Format("{0} 号条码扫描处理失败！详情：未扫到条码！", scannerCode));
-                                        return;
-                                    }
-                                    Scanner_Process_StockIn(scannerCode, barcode);
-                                }
-                                return;
-                            default:
-                                return;
-                        }
+                        scannerCode = stateItem.ItemName;
+                        parameters = (Dictionary<string, string>)stateItem.State;
+                        barcode = parameters["barcode"];
+                        break;
                     case "StockPLC_01":
-                        scannerCode = stateItem.ItemName.Split("_"[0])[1];  //处理的条码扫码器号
-                        string info = stateItem.ItemName.Split("_"[0])[0];  //
+                        scannerCode = stateItem.ItemName.Split("_"[0])[1];
+                        string info = stateItem.ItemName.Split("_"[0])[0];
+
                         orderNo = Convert.ToInt32(THOK.MCP.ObjectUtil.GetObject(stateItem.State));
-                        
                         object state = THOK.MCP.ObjectUtil.GetObject(Context.Services["StockPLC_01"].Read("ErrTag_01"));
                         int errTag = state != null ? Convert.ToInt32(state) : 0;
 
-                        if (info == "ErrTag")
+                        if (info == "ErrTag" && orderNo == 1)
                         {
-                            if (orderNo == 1)
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                return;
-                            }
+                            //ShowMessageBox("扫码失败，请手工复位！", "询问", MessageBoxButtons.OK, MessageBoxIcon.Question);                        
+                            return;
                         }
+                        else if(info == "ErrTag")
+                        {
+                            return;
+                        }
+
 
                         int supplyAddress = scannerParameters.GetParameter(scannerCode, "SupplyAddress") != null ? (int)scannerParameters.GetParameter(scannerCode, "SupplyAddress") : 0;
                         int change = scannerParameters.GetParameter(scannerCode, "Change") != null ? (int)scannerParameters.GetParameter(scannerCode, "Change") : 0;
@@ -169,18 +140,18 @@ namespace THOK.AS.Stocking.Process
 
                         if (orderNo == orderNo_sl)
                         {
-                            int[] data = new int[3];
+                            int [] data = new int [3];
                             data[0] = supplyAddress;
                             data[1] = change;
                             data[2] = orderNo_sl;
+
                             WriteToService("StockPLC_01", "Scanner_DirectoryData_" + scannerCode, data);
                         }
                         else if (orderNo == orderNo_sl + 1)
-                        {
+                        {                          
                             if (!isProcessingError && errTag == 1)
                             {
                                 isProcessingError = true;
-                                processingOrderNo = orderNo_sl + 1;
                                 WriteToProcess("buttonArea", "SimulateDialog", "01");
                             }
                         }
@@ -190,13 +161,78 @@ namespace THOK.AS.Stocking.Process
                             ShowMessageBox(string.Format(scannerCode + "号扫码器，故障恢复处理失败，原因：PLC记录当前经过件烟流水号{0},上位机记录当前流水号应为{1},请人工确人！", orderNo, orderNo_sl + 1), "询问", MessageBoxButtons.OK, MessageBoxIcon.Question);
                         }
                         return;
+                        break;
+                    case "StockPLC_02":
+                        scannerCode = stateItem.ItemName.Split("_"[0])[1];
+                        barcode = stateItem.ItemName.Split("_"[0])[0];
+                        orderNo = Convert.ToInt32(THOK.MCP.ObjectUtil.GetObject(stateItem.State));
+                        if (orderNo == 0)
+                        {
+                            WriteToProcess("LEDProcess", "Refresh", null);
+                            return;
+                        }
+                        break;
                     default:
                         return;
+                        break;
                 }
+
+                switch (scannerCode)
+                {
+                    case "Init":
+                        scannerParameters.Init();
+                        return;
+                        break;
+                    case "01":
+                        if (barcode == "NOREAD")
+                        {
+                            Logger.Error(scannerCode + "号条码扫描处理失败！详情：未扫到条码！");
+                            return;
+                        }
+                        Scanner_Process_StockIn(scannerCode, barcode);
+                        break;
+                    default:
+                        if (barcode == "NOREAD")
+                        {
+                            Logger.Error(scannerCode + "号条码扫描器处理失败！详情：未扫到条码！");
+                            return;
+                        }
+                        if (barcode == "ReScanOk" || barcode == "Show")
+                        {
+                            int orderNo_sl = scannerParameters.GetParameter(scannerCode, "OrderNo") != null ? (int)scannerParameters.GetParameter(scannerCode, "OrderNo") : 0;
+                            int supplyAddress = scannerParameters.GetParameter(scannerCode, "SupplyAddress") != null ? (int)scannerParameters.GetParameter(scannerCode, "SupplyAddress") : 0;
+                            string cigaretteName = scannerParameters.GetParameter(scannerCode, "CigaretteName") != null ? (string)scannerParameters.GetParameter(scannerCode, "CigaretteName") : "";
+                            if (orderNo == orderNo_sl && supplyAddress != 0 && cigaretteName != "")
+                            {
+                                if (barcode == "ReScanOk")
+                                {
+                                    int[] data = new int[2];
+                                    data[0] = supplyAddress;
+                                    data[1] = orderNo;
+
+                                    WriteToService("StockPLC_02", "Scanner_DirectoryData_" + scannerCode, data);
+                                }
+                                else
+                                {
+                                    WriteToProcess("LEDProcess", "Show_Scanner_" + scannerCode, cigaretteName);
+                                }
+                                return;
+                            }
+                            else if (orderNo != orderNo_sl + 1)
+                            {
+                                Logger.Error(string.Format(scannerCode + "号扫码器，故障恢复处理失败，原因：PLC记录当前经过件烟流水号{0},上位机记录当前流水号应为{1},请人工确人！", orderNo, orderNo_sl + 1));
+                                ShowMessageBox(string.Format(scannerCode + "号扫码器，故障恢复处理失败，原因：PLC记录当前经过件烟流水号{0},上位机记录当前流水号应为{1},请人工确人！", orderNo, orderNo_sl + 1), "询问", MessageBoxButtons.OK, MessageBoxIcon.Question);
+                                return;
+                            }
+                        }
+                        Scanner_Process_StockOut(scannerCode, barcode);
+                        break;
+                }
+
             }
             catch (Exception e)
             {
-                Logger.Error(string.Format("{0} 号条码扫描处理失败，原因：{1} ",this.scan ,e.Message));
+                Logger.Error("件烟条码扫描处理失败，原因：" + e.Message);
             }
         }
 
@@ -205,6 +241,7 @@ namespace THOK.AS.Stocking.Process
             if (barcode.Length == 32)
             {
                 barcode = barcode.Substring(2, 6);
+                Logger.Info(barcode);
             }
 
             if (barcode.Length != 6)
@@ -290,9 +327,10 @@ namespace THOK.AS.Stocking.Process
                     Logger.Error(text);
                     ShowMessageBox(text, "询问", MessageBoxButtons.OK, MessageBoxIcon.Question);                    
 
-                    text = scannerCode + "号条码扫描器处理失败！详情：当前卷烟可能需要更新更条码，请确认！";
+                    text = scannerCode + "号条码扫描器处理失败！详情：当前卷烟需要更新更条码，请确认！";
                     string cigaretteCode = "";
                     Scan(text, cigaretteCode, barcode);
+
                     return;
                 }
 
@@ -351,10 +389,110 @@ namespace THOK.AS.Stocking.Process
                             WriteToProcess("DataRequestProcess", "StockInRequest", 1);
                         }
 
-                        WriteToProcess("LEDProcess", "Refresh_01", null);
+                        WriteToProcess("LEDProcess", "Refresh", null);
                         Logger.Info(string.Format(scannerCode + "号条码扫描，写分流数据，卷烟名称:{0}，目标:{1} ！", stockInTable.Rows[0]["CIGARETTENAME"], Convert.ToInt32(stockInTable.Rows[0]["CHANNELCODE"].ToString())));
                     }
                     return;
+                }
+            }
+        }
+
+        private void Scanner_Process_StockOut(string scannerCode, string barcode)
+        {
+            //取得条码,并查询 AS_STOCK_OUT 表是否与当前应该通过的卷烟一致。如一致下发数据给PLC，如不正确记录错录日志。
+            using (PersistentManager pm = new PersistentManager())
+            {
+                StockOutDao stockOutDao = new StockOutDao();
+
+                DataTable outTable = stockOutDao.FindCigaretteForScanner(scannerCode);
+
+                if (outTable.Rows.Count != 0)
+                {
+                    if (barcode.Length ==32)
+                    {
+                        barcode = barcode.Substring(2, 6);
+                    }
+
+                    if (barcode == "ReScanOk")
+                    {
+                        barcode = outTable.Rows[0]["BARCODE"].ToString();
+                        Logger.Info(scannerCode + "号条码扫描器，故障恢复！");
+                    }
+
+                    if (barcode == "Show")
+                    {
+                        WriteToProcess("LEDProcess", "Show_Scanner_" + scannerCode, outTable.Rows[0]["CIGARETTENAME"]);
+                        return;
+                    }
+
+                    if (barcode != outTable.Rows[0]["BARCODE"].ToString())
+                    {
+                        string text = string.Format(scannerCode + "扫码器：当前卷烟品牌为‘{0}’，扫到条码为 ‘{1}’ ,旧条码为 ‘{2}’！", outTable.Rows[0]["CIGARETTENAME"], barcode, outTable.Rows[0]["BARCODE"].ToString());
+                        WriteToProcess("LEDProcess", "Show_Scanner_" + scannerCode,"扫码出错请确认！");
+
+                        Logger.Error(scannerCode + "号条码扫描处理失败！详情：" + text);
+                        string cigaretteCode = outTable.Rows[0]["CIGARETTECODE"].ToString();
+                        Scan(text, cigaretteCode,barcode);
+                        return;
+                    }
+
+                    if (barcode == outTable.Rows[0]["BARCODE"].ToString())
+                    {
+                        try
+                        {
+                            //写PLC       
+                            int lineCode = Convert.ToInt32(outTable.Rows[0]["LINECODE"]);
+
+                            switch (Context.Attributes["SupplyToSortLine"].ToString())
+                            {
+                                case "01":
+                                    lineCode = 1;
+                                    break;
+                                case "02":
+                                    lineCode = 2;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            int supplyAddress = Convert.ToInt32(lineCode.ToString() + outTable.Rows[0]["SUPPLYADDRESS"].ToString().PadLeft(2, "0"[0]));
+                            int OrderNo = scannerParameters.GetParameter(scannerCode, "OrderNo") != null ? (int)scannerParameters.GetParameter(scannerCode, "OrderNo") : 0;
+
+                            int[] data = new int[2];
+                            data[0] = supplyAddress;
+                            data[1] = OrderNo +1;
+
+                            if (WriteToService("StockPLC_02", "Scanner_DirectoryData_" + scannerCode, data))
+                            {
+                                pm.BeginTransaction();
+                                //更新为已扫描
+                                stockOutDao.UpdateScanStatus(outTable.Rows[0]["STOCKOUTID"].ToString(),scannerCode);
+                                pm.Commit();
+                                
+                                scannerParameters.SetParameter(scannerCode, "OrderNo", OrderNo + 1);
+                                scannerParameters.SetParameter(scannerCode, "SupplyAddress", supplyAddress);
+                                scannerParameters.SetParameter(scannerCode, "CigaretteName", outTable.Rows[0]["CIGARETTENAME"]);
+
+                                if (scannerCode == "03")
+                                {
+                                    WriteToProcess("LEDProcess", "Refresh_02_MoveNext", null);
+                                }                                
+
+                                Logger.Info(string.Format( scannerCode + "号条码扫描，写分流数据成功，卷烟名称:{0}，目标:{1} ！", outTable.Rows[0]["CIGARETTENAME"], data[0].ToString() + data[1].ToString()));
+                            }
+                            else
+                                Logger.Error(string.Format(scannerCode + "号条码扫描，写分流数据失败，卷烟名称:{0}，目标:{1} ！", outTable.Rows[0]["CIGARETTENAME"], data));
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error(scannerCode + "号条码扫描，写分流数据失败，原因：" + e.Message);
+                            pm.Rollback();
+                        }
+                    }
+                }
+                else
+                {
+                    Logger.Error(scannerCode + "号条码扫描，没有补货任务，请与PLC核对补货信息。");
                 }
             }
         }

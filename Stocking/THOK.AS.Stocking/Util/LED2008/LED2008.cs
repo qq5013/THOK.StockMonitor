@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.Drawing;
 
-namespace THOK.AS.Stocking.Util
+namespace THOK.AS.Stocking.Util.LED2008
 {
     public class LED2008
     {

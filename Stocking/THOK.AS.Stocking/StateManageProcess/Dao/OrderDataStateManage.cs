@@ -6,10 +6,12 @@ using THOK.Util;
 using System.Data;
 using THOK.AS.Stocking.Util;
 
-namespace THOK.AS.Stocking.StateManage
+namespace THOK.AS.Stocking.StateManageProcess.Dao
 {
     class OrderDataStateManage: BaseDao
     {
+        private IProcessDispatcher dispatcher;
+
         private string stateItemCode = "";
         private string dataView = "";
         private int index = 0;
@@ -17,9 +19,10 @@ namespace THOK.AS.Stocking.StateManage
         private string orderItemName = "";
         private string checkItemName = "";
 
-        public OrderDataStateManage(string stateItemCode)
+        public OrderDataStateManage(string stateItemCode, IProcessDispatcher dispatcher)
         {
             this.stateItemCode = stateItemCode;
+            this.dispatcher = dispatcher;
             GetParameters();
         }
 
@@ -45,33 +48,16 @@ namespace THOK.AS.Stocking.StateManage
                 return false;
             }
             else
-            {
-                string str = string.Format("订单写入成功，流水号：[{0}]",index);
-                Logger.Info(str);
                 return true;
-            }
         }
 
-        public bool MoveNext()
-        {
-            bool result = false;
-
-            index++;
-            string sql = "UPDATE AS_STATEMANAGER_ORDER SET INDEXNO = {0} WHERE STATECODE = '{1}'";
-            sql = string.Format(sql, index, "01");
-            ExecuteNonQuery(sql);
-
-            result = true;
-            return result;
-        }
-
-        public bool MoveTo(int index,IProcessDispatcher dispatcher)
+        public bool MoveTo(int index)
         {
             bool result = false;
 
             this.index = index - 1;
-            string sql = "UPDATE AS_STATEMANAGER_ORDER SET INDEXNO = {0} WHERE STATECODE = '01'";
-            sql = string.Format(sql, index - 1, 01);
+            string sql = "UPDATE AS_STATEMANAGER_ORDER SET INDEXNO = {0} WHERE STATECODE = '{1}'";
+            sql = string.Format(sql, this.index, stateItemCode);
             ExecuteNonQuery(sql);            
     
             //写校正完成标志到PLC
@@ -82,13 +68,41 @@ namespace THOK.AS.Stocking.StateManage
             return result;
         }
 
-        public bool WriteToPlc(IProcessDispatcher dispatcher)
+        public bool WriteToPlc()
         {
             bool result = false;
+            int quantity = 50;
+            
             //给PLC写订单数据 
-            //TODO 订单数据加工处理
-            if (dispatcher.WriteToService(plcServicesName,orderItemName, 2))
+            Stack<int> data = new Stack<int>();
+
+            string sql = "SELECT TOP {0} * FROM {1} WHERE INDEX > {2}";
+            sql = string.Format(sql,quantity,dataView, this.index);
+            DataTable table = ExecuteQuery(sql).Tables[0];
+
+            foreach (DataRow  row in table.Rows)
             {
+                data.Push(Convert.ToInt32(row["CHANNELCODE"]));
+                this.index++;
+            }
+
+            while (data.Count < quantity)
+            {
+                data.Push(0);
+            }
+
+            data.Push(this.index);//最后一件流水号
+            data.Push(table.Rows.Count);//总件数
+            data.Push(1);//完成标志
+
+            int[] dataItems = data.ToArray();
+            Array.Reverse(dataItems);
+
+            if (dispatcher.WriteToService(plcServicesName, orderItemName,dataItems))
+            {
+                sql = "UPDATE AS_STATEMANAGER_ORDER SET INDEXNO = {0} WHERE STATECODE = '{1}'";
+                sql = string.Format(sql, this.index, stateItemCode);
+                ExecuteNonQuery(sql);
                 result = true;
             }
             return result;

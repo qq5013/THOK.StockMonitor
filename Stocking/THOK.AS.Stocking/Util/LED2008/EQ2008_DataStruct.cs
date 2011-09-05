@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace THOK.AS.Stocking.Util
+namespace THOK.AS.Stocking.Util.LED2008
 {
     /// <summary>
     /// 节目区域参数
