@@ -15,19 +15,17 @@
 			<OPCItem ItemName="Show_03" ClientHandler="7" OPCItemName="DB1,INT126,1" ItemType="READ"/>
 			<!--状态管理器添加部分-->
 			<!--订单部分-->
-			<OPCItem ItemName="01_OrderMoveNext" ClientHandler="8" OPCItemName="DB1,INT128,1" ItemType="READ"/>
-			<OPCItem ItemName="01_OrderMoveTo" ClientHandler="9" OPCItemName="DB1,INT130,1" ItemType="READ"/>
-			<OPCItem ItemName="RouteChannageTag" ClientHandler="10" OPCItemName="DB1,INT132,1"  ItemType="WRITE"/>
-			<!--扫码器部分-->
-			<!--LED部分-->
-			<OPCItem ItemName="01_MoveNext" ClientHandler="11" OPCItemName="DB1,INT134,1" ItemType="READ"/>
-			<OPCItem ItemName="01_MoveTo" ClientHandler="12" OPCItemName="DB1,INT136,1" ItemType="READ"/>
-			<OPCItem ItemName="Release" ClientHandler="13" OPCItemName="DB1,INT138,1" ItemType="WRITE"/>
-
-			<OPCItem ItemName="01_LedMoveNext" ClientHandler="14" OPCItemName="DB1,INT140,1" ItemType="READ"/>
-			<OPCItem ItemName="01_LedMoveTo" ClientHandler="15" OPCItemName="DB1,INT142,1" ItemType="READ"/>
-			
-			
+			<OPCItem ItemName="01_OrderDataMoveNext" ClientHandler="8" OPCItemName="DB1,INT128,1" ItemType="READ"/>
+			<OPCItem ItemName="01_OrderDataMoveTo" ClientHandler="9" OPCItemName="DB1,INT130,1" ItemType="READ"/>
+      <!--LED部分-->
+      <OPCItem ItemName="01_LedMoveNext" ClientHandler="10" OPCItemName="DB1,INT134,1" ItemType="READ"/>
+      <OPCItem ItemName="01_LedMoveTo" ClientHandler="11" OPCItemName="DB1,INT136,1" ItemType="READ"/>
+      <OPCItem ItemName="01_LedShowData" ClientHandler="12" OPCItemName="DB1,INT138,1" ItemType="WRITE"/>
+      <!--扫码器部分-->
+      <OPCItem ItemName="01_ScannerMoveNext" ClientHandler="13" OPCItemName="DB1,INT140,1" ItemType="READ"/>
+      <OPCItem ItemName="01_ScannerMoveTo" ClientHandler="14" OPCItemName="DB1,INT142,1" ItemType="READ"/>
+      <OPCItem ItemName="01_ScannerShowData" ClientHandler="15" OPCItemName="DB1,INT144,1" ItemType="READ"/>
+      
 		</OPCGroup>
 	</OPCServer>
 </Config>

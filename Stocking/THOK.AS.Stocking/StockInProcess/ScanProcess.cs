@@ -7,7 +7,7 @@ using THOK.MCP;
 using THOK.Util;
 using THOK.AS.Stocking.Dao;
 
-namespace THOK.AS.Stocking.StockInProcess.Process
+namespace THOK.AS.Stocking.StockInProcess
 {
     public class ScanProcess : AbstractProcess
     {      

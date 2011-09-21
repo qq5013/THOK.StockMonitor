@@ -6,7 +6,7 @@ using THOK.MCP;
 using THOK.Util;
 using THOK.AS.Stocking.Dao;
 
-namespace THOK.AS.Stocking.StockOutProcess.Process
+namespace THOK.AS.Stocking.StockOutProcess
 {
     public class SupplyRequestProcess: AbstractProcess
     {

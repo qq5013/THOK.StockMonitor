@@ -62,7 +62,7 @@ namespace THOK.AS.Stocking.View
                 Context.ProcessDispatcher.WriteToProcess("LEDProcess", "Refresh", null);
                 Context.ProcessDispatcher.WriteToProcess("LedStateProcess", "Refresh", null);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Logger.Error(ex.Message);
             }
@@ -79,11 +79,19 @@ namespace THOK.AS.Stocking.View
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            Context.Processes["OrderDataStateProcess"].Resume();
-            Context.ProcessDispatcher.WriteToProcess("LEDProcess", "Refresh", null);
-            Context.ProcessDispatcher.WriteToProcess("LedStateProcess", "Refresh", null);
-            SwitchStatus(true);
-            timer1.Enabled = true;
+            try
+            {
+                Context.Processes["OrderDataStateProcess"].Resume();
+                Context.ProcessDispatcher.WriteToProcess("LEDProcess", "Refresh", null);
+                Context.ProcessDispatcher.WriteToProcess("LedStateProcess", "Refresh", null);
+                SwitchStatus(true);
+                timer1.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message);
+            }
+            
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -153,12 +161,12 @@ namespace THOK.AS.Stocking.View
                         DataTable table = serverDao.FindBatch();
                         if (table.Rows.Count != 0)
                         {
-                            using (PersistentManager pmWES = new PersistentManager("WESConnection"))
-                            {
-                                StockInBatchDao stockInBatchDaoWES = new StockInBatchDao();
-                                stockInBatchDaoWES.SetPersistentManager(pmWES);
-                                stockInBatchDaoWES.Delete();
-                            }
+                            //using (PersistentManager pmWES = new PersistentManager("WESConnection"))
+                            //{
+                            //    StockInBatchDao stockInBatchDaoWES = new StockInBatchDao();
+                            //    stockInBatchDaoWES.SetPersistentManager(pmWES);
+                            //    stockInBatchDaoWES.Delete();
+                            //}
                             
                             string batchID = table.Rows[0]["BATCHID"].ToString();
                             string orderDate = table.Rows[0]["ORDERDATE"].ToString();

@@ -7,7 +7,7 @@ using THOK.Util;
 using THOK.AS.Stocking.Dao;
 using THOK.AS.Stocking.Util.LED2008;
 
-namespace THOK.AS.Stocking.StockInProcess.Process
+namespace THOK.AS.Stocking.StockInProcess
 {
     public class LEDProcess: AbstractProcess
     {

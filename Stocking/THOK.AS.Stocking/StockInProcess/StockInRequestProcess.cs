@@ -7,7 +7,7 @@ using System.Data;
 using System.Windows.Forms;
 using THOK.Util;
 
-namespace THOK.AS.Stocking.StockInProcess.Process
+namespace THOK.AS.Stocking.StockInProcess
 {
     class StockInRequestProcess : AbstractProcess
     {

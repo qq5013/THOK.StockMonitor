@@ -34,10 +34,6 @@ namespace THOK.AS.Stocking.View
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvMain = new System.Windows.Forms.DataGridView();
-            this.bsMain = new System.Windows.Forms.BindingSource(this.components);
-            this.btnExit = new System.Windows.Forms.Button();
-            this.btnExchange = new System.Windows.Forms.Button();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.LINECODE = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.CHANNELCODE = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.CHANNELNAME = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
@@ -45,6 +41,10 @@ namespace THOK.AS.Stocking.View
             this.CIGARETTECODE = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.CIGARETTENAME = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.QUANTITY = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.bsMain = new System.Windows.Forms.BindingSource(this.components);
+            this.btnExit = new System.Windows.Forms.Button();
+            this.btnExchange = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.pnlTool.SuspendLayout();
             this.pnlContent.SuspendLayout();
             this.pnlMain.SuspendLayout();
@@ -105,47 +105,6 @@ namespace THOK.AS.Stocking.View
             this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMain.Size = new System.Drawing.Size(733, 229);
             this.dgvMain.TabIndex = 0;
-            // 
-            // btnExit
-            // 
-            this.btnExit.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnExit.Image = global::THOK.AS.Stocking.Properties.Resources.Exit;
-            this.btnExit.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnExit.Location = new System.Drawing.Point(96, 0);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(48, 51);
-            this.btnExit.TabIndex = 15;
-            this.btnExit.Text = "退出";
-            this.btnExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
-            // btnExchange
-            // 
-            this.btnExchange.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnExchange.Image = global::THOK.AS.Stocking.Properties.Resources.Info;
-            this.btnExchange.Location = new System.Drawing.Point(48, 0);
-            this.btnExchange.Name = "btnExchange";
-            this.btnExchange.Size = new System.Drawing.Size(48, 51);
-            this.btnExchange.TabIndex = 14;
-            this.btnExchange.Text = "交换";
-            this.btnExchange.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnExchange.UseVisualStyleBackColor = true;
-            this.btnExchange.Click += new System.EventHandler(this.btnExchange_Click);
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnRefresh.Image = global::THOK.AS.Stocking.Properties.Resources.Chart;
-            this.btnRefresh.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnRefresh.Location = new System.Drawing.Point(0, 0);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(48, 51);
-            this.btnRefresh.TabIndex = 13;
-            this.btnRefresh.Text = "刷新";
-            this.btnRefresh.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // LINECODE
             // 
@@ -213,6 +172,48 @@ namespace THOK.AS.Stocking.View
             this.QUANTITY.Name = "QUANTITY";
             this.QUANTITY.ReadOnly = true;
             this.QUANTITY.Width = 60;
+            // 
+            // btnExit
+            // 
+            this.btnExit.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnExit.Image = global::THOK.AS.Stocking.Properties.Resources.Exit;
+            this.btnExit.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnExit.Location = new System.Drawing.Point(96, 0);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(48, 51);
+            this.btnExit.TabIndex = 15;
+            this.btnExit.Text = "退出";
+            this.btnExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
+            // btnExchange
+            // 
+            this.btnExchange.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnExchange.Image = global::THOK.AS.Stocking.Properties.Resources.Info;
+            this.btnExchange.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnExchange.Location = new System.Drawing.Point(48, 0);
+            this.btnExchange.Name = "btnExchange";
+            this.btnExchange.Size = new System.Drawing.Size(48, 51);
+            this.btnExchange.TabIndex = 14;
+            this.btnExchange.Text = "交换";
+            this.btnExchange.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnExchange.UseVisualStyleBackColor = true;
+            this.btnExchange.Click += new System.EventHandler(this.btnExchange_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnRefresh.Image = global::THOK.AS.Stocking.Properties.Resources.Chart;
+            this.btnRefresh.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnRefresh.Location = new System.Drawing.Point(0, 0);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(48, 51);
+            this.btnRefresh.TabIndex = 13;
+            this.btnRefresh.Text = "刷新";
+            this.btnRefresh.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // ChannelQueryForm
             // 

@@ -66,7 +66,7 @@ namespace THOK.AS.Stocking.StateManageProcess
                             {
                                 if (orderDataStateManage.WriteToPlc())
                                 {
-                                    //todo;
+                                    Logger.Info(string.Format("订单数据写入成功流水号：[{0}]",index));
                                 }
                             }
                             break;

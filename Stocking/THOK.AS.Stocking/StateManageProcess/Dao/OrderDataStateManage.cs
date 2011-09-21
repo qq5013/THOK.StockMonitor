@@ -18,6 +18,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
         private string plcServicesName = "";
         private string orderItemName = "";
         private string checkItemName = "";
+        private string orderQuantity = "";
 
         public OrderDataStateManage(string stateItemCode, IProcessDispatcher dispatcher)
         {
@@ -37,6 +38,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             this.plcServicesName = table.Rows[0]["PLCSERVICESNAME"].ToString();
             this.orderItemName = table.Rows[0]["ORDERITEMNAME"].ToString();
             this.checkItemName = table.Rows[0]["CHECKITEMNAME"].ToString();
+            this.orderQuantity=table.Rows[0]["ORDERQUANTITY"].ToString();
         }
       
         public bool Check(int index)
@@ -71,7 +73,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
         public bool WriteToPlc()
         {
             bool result = false;
-            int quantity = 50;
+            int quantity =Convert.ToInt32(this.orderQuantity);
             
             //给PLC写订单数据 
             Stack<int> data = new Stack<int>();

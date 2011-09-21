@@ -95,10 +95,8 @@
     <Content Include="DB.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Monitor.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\S1.0002.gif" />
+    <Content Include="Monitor.xml" />
     <Content Include="Scanner.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

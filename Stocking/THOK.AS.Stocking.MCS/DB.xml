@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <Connections>
   <Connection Name="DefaultConnection" DatabaseType="SQLSERVER">
-    <ConnectionString Value="server=DELL-AEAB75A737\SQLEXPRESS;database=StockDB;uid=sa;" />
+    <ConnectionString Value="server=DELL-PC\SQLEXPRESS;database=StockDB;uid=sa;" />
     <Password Name="password" Value="65CED0851FFD283F" />
   </Connection>
   <Connection Name="ServerConnection" DatabaseType="SQLSERVER">
-    <ConnectionString Value="server=DELL-AEAB75A737\SQLEXPRESS;database=Logistics;uid=sa;" />
+    <ConnectionString Value="server=DELL-PC\SQLEXPRESS;database=Logistics;uid=sa;" />
     <Password Name="password" Value="65CED0851FFD283F" />
   </Connection>
 </Connections>

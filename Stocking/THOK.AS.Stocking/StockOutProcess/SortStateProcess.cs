@@ -6,7 +6,7 @@ using THOK.AS.Stocking.Dao;
 using THOK.MCP;
 using THOK.Util;
 
-namespace THOK.AS.Stocking.StockOutProcess.Process
+namespace THOK.AS.Stocking.StockOutProcess
 {
     class SortStateProcess : AbstractProcess
     {

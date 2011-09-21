@@ -47,7 +47,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             sql = string.Format(sql, dataView, this.index + 1);
             DataTable table = ExecuteQuery(sql).Tables[0];
 
-            if (table.Rows[0]["BARCODE"].ToString() == barcode)
+            if (table.Rows[0]["BARCODE"].ToString() == barcode) 
                 return true;
             else
                 return false; 
