@@ -76,7 +76,7 @@ namespace THOK.AS.Stocking.StockInProcess
         public override void Initialize(Context context)
         {
             base.Initialize(context);
-            //scannerParameters = SerializableScannerParameters.Deserialize();
+            scannerParameters = SerializableScannerParameters.Deserialize();
         }
 
         protected override void StateChanged(StateItem stateItem, IProcessDispatcher dispatcher)
@@ -110,7 +110,7 @@ namespace THOK.AS.Stocking.StockInProcess
                             barcode = parameters["barcode"];
                         }
                         break;
-                    case "SickScan":
+                    case "Scanner":
                         scannerCode = stateItem.ItemName;
                         parameters = (Dictionary<string, string>)stateItem.State;
                         barcode = parameters["barcode"];
@@ -192,40 +192,6 @@ namespace THOK.AS.Stocking.StockInProcess
                         Scanner_Process_StockIn(scannerCode, barcode);
                         break;
                     default:
-                        if (barcode == "NOREAD")
-                        {
-                            Logger.Error(scannerCode + "号条码扫描器处理失败！详情：未扫到条码！");
-                            return;
-                        }
-                        if (barcode == "ReScanOk" || barcode == "Show")
-                        {
-                            int orderNo_sl = scannerParameters.GetParameter(scannerCode, "OrderNo") != null ? (int)scannerParameters.GetParameter(scannerCode, "OrderNo") : 0;
-                            int supplyAddress = scannerParameters.GetParameter(scannerCode, "SupplyAddress") != null ? (int)scannerParameters.GetParameter(scannerCode, "SupplyAddress") : 0;
-                            string cigaretteName = scannerParameters.GetParameter(scannerCode, "CigaretteName") != null ? (string)scannerParameters.GetParameter(scannerCode, "CigaretteName") : "";
-                            if (orderNo == orderNo_sl && supplyAddress != 0 && cigaretteName != "")
-                            {
-                                if (barcode == "ReScanOk")
-                                {
-                                    int[] data = new int[2];
-                                    data[0] = supplyAddress;
-                                    data[1] = orderNo;
-
-                                    WriteToService("StockPLC_02", "Scanner_DirectoryData_" + scannerCode, data);
-                                }
-                                else
-                                {
-                                    WriteToProcess("LEDProcess", "Show_Scanner_" + scannerCode, cigaretteName);
-                                }
-                                return;
-                            }
-                            else if (orderNo != orderNo_sl + 1)
-                            {
-                                Logger.Error(string.Format(scannerCode + "号扫码器，故障恢复处理失败，原因：PLC记录当前经过件烟流水号{0},上位机记录当前流水号应为{1},请人工确人！", orderNo, orderNo_sl + 1));
-                                ShowMessageBox(string.Format(scannerCode + "号扫码器，故障恢复处理失败，原因：PLC记录当前经过件烟流水号{0},上位机记录当前流水号应为{1},请人工确人！", orderNo, orderNo_sl + 1), "询问", MessageBoxButtons.OK, MessageBoxIcon.Question);
-                                return;
-                            }
-                        }
-                        Scanner_Process_StockOut(scannerCode, barcode);
                         break;
                 }
 

@@ -38,7 +38,7 @@ namespace THOK.AS.Stocking.StateManageProcess
              *           (1)StateItemCode_OrderDataMoveNext ： 来自PLC数据单元，请求写订单，PLC将用当前经过件烟流水号，请求写订单数据！
              *           (2)StateItemCode_OrderDataMoveTo   ： 来自PLC数据单元，请求较正数据，PLC将用当前经过件烟流水号，请求较正数据！
              *           
-             * stateItem.State  
+             * stateItem.State ：来自PLC数据块的流水号。
              */
             try
             {
@@ -46,6 +46,11 @@ namespace THOK.AS.Stocking.StateManageProcess
                 {
                     if (stateItem.ItemName == "Init")
                     {
+                        foreach (string stateCode in (new OrderDataStateManage()).GetStateItemCodeList())
+                        {
+                            GetStateManage(stateCode);
+                        }
+
                         foreach (OrderDataStateManage orderDataStateManageItem in orderDataStateManages.Values)
                         {
                             orderDataStateManageItem.MoveTo(1);

@@ -96,12 +96,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\S1.0002.gif" />
-    <Content Include="Monitor.xml" />
+    <Content Include="Monitor.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scanner.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SortPLC_01.xml" />
-    <Content Include="SortPLC_02.xml" />
+    <Content Include="SortPLC_01.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SortPLC_02.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="StockPLC_01.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -39,7 +39,7 @@ namespace THOK.AS.Stocking.StateManageProcess.StateManage
              *           (2)StateItemCode_ScannerMoveTo       ： 来自PLC数据单元，请求较正数据，PLC将用当前经过件烟流水号，请求较正数据！
              *           (3)StateItemCode_ScannerShowData     ： 来自PLC数据单元，请求显示数据，PLC将用当前经过件烟流水号，请求显示数据！
              *           (4)StateItemCode(当stateItem.Name = “Scanner”) ： 来自扫码器的信息，数据为当前扫到的条码
-             * stateItem.State
+             * stateItem.State 数据为当前扫到的条码
              *  
              */
             try
@@ -51,12 +51,27 @@ namespace THOK.AS.Stocking.StateManageProcess.StateManage
 
                     if (stateItem.ItemName == "Init")
                     {
+                        foreach (string stateCode in (new ScannerStateManage()).GetStateItemCodeList())
+                        {
+                            GetStateManage(stateCode);
+                        }
+
                         foreach (ScannerStateManage scannerStateManagesItem in scannerStateManages.Values)
                         {
                             scannerStateManagesItem.MoveTo(1);
                         }
                         return;
                     }
+
+                    if (stateItem.ItemName == "Refresh")
+                    {
+                        foreach (ScannerStateManage scannerStateManagesItem in scannerStateManages.Values)
+                        {
+                            scannerStateManagesItem.ShowData();
+                        }
+                        return;
+                    }
+
                     if (stateItem.Name == "Scanner")
                     {
                         stateItemCode = stateItem.ItemName;

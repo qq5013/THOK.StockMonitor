@@ -37,7 +37,7 @@ namespace THOK.AS.Stocking.StateManageProcess
              *              (1)Refresh                   ： 刷新数据
              *              (2)StateItemCode_LedMoveNext ： 来自PLC数据单元，请求件烟通过，PLC将用当前经过件烟流水号，请求件烟通过！
              *              (3)StateItemCode_LedMoveTo   ： 来自PLC数据单元，请求较正数据，PLC将用当前经过件烟流水号，请求较正数据！
-             *              (3)StateItemCode_LedShowData ： 来自PLC数据单元，请求刷新数据
+             *              (4)StateItemCode_LedShowData ： 来自PLC数据单元，请求刷新数据
              * stateItem.State ：来自PLC数据块的流水号。
              */
             try
@@ -46,6 +46,11 @@ namespace THOK.AS.Stocking.StateManageProcess
                 {
                     if (stateItem.ItemName == "Init")
                     {
+                        foreach (string stateCode in (new LedStateManage()).GetStateItemCodeList())
+                        {
+                            GetStateManage(stateCode);
+                        }
+
                         foreach (LedStateManage ledStateManageItem in ledStateManages.Values)
                         {
                             ledStateManageItem.MoveTo(1);

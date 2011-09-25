@@ -20,6 +20,26 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
         private string checkItemName = "";
         private string orderQuantity = "";
 
+        public OrderDataStateManage()
+        {
+        }
+
+        internal IList<string> GetStateItemCodeList()
+        {
+            IList<string> stateItemCodeList = new List<string>();
+
+            string sql = "SELECT * FROM AS_STATEMANAGER_ORDER";
+            sql = string.Format(sql, stateItemCode);
+            DataTable table = ExecuteQuery(sql).Tables[0];
+
+            foreach (DataRow  row in table.Rows)
+            {
+                stateItemCodeList.Add(row["STATECODE"].ToString());
+            }
+
+            return stateItemCodeList;
+        }
+
         public OrderDataStateManage(string stateItemCode, IProcessDispatcher dispatcher)
         {
             this.stateItemCode = stateItemCode;

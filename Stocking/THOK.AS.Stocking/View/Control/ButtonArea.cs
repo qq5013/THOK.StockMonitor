@@ -211,10 +211,16 @@ namespace THOK.AS.Stocking.View
 
                             //初始化扫码器
                             Context.ProcessDispatcher.WriteToProcess("ScanProcess", "Init", null);
+                            //初始化状态管理器
+                            Context.ProcessDispatcher.WriteToProcess("LedStateProcess", "Init", null);
+                            Context.ProcessDispatcher.WriteToProcess("OrderDataStateProcess", "Init", null);
+                            Context.ProcessDispatcher.WriteToProcess("ScannerStateProcess", "Init", null);
+
                             //生成入库请求任务数据
                             Context.ProcessDispatcher.WriteToProcess("StockInRequestProcess", "FirstBatch", null);
                             //生成补货请求任务数据
                             Context.ProcessDispatcher.WriteToProcess("SupplyRequestProcess", "FirstBatch", null);
+                            //订单日期批次信息
                             Context.ProcessDispatcher.WriteToProcess("SupplyRequestProcess", "OrderInfo", new string[] { orderDate, batchNo });                    
                         }
                         else
