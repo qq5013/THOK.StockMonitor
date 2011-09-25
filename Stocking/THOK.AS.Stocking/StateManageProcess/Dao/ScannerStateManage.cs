@@ -35,7 +35,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             DataTable table = ExecuteQuery(sql).Tables[0];
 
             this.dataView = table.Rows[0]["VIEWNAME"].ToString();
-            this.index = Convert.ToInt32(table.Rows[0]["INDEXNO"].ToString());
+            this.index = Convert.ToInt32(table.Rows[0]["ROW_INDEX"].ToString());
             this.plcServicesName = table.Rows[0]["PLCSERVICESNAME"].ToString();
             this.releaseItemName = table.Rows[0]["RELEASEITEMNAME"].ToString();
             this.ledCode = table.Rows[0]["LEDCODE"].ToString();
@@ -43,7 +43,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
 
         internal bool Check(string barcode)
         {
-            string sql = "SELECT * FROM {0} WHERE INDEX = {1}";
+            string sql = "SELECT * FROM {0} WHERE ROW_INDEX = {1}";
             sql = string.Format(sql, dataView, this.index + 1);
             DataTable table = ExecuteQuery(sql).Tables[0];
 
@@ -58,20 +58,20 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             if (this.index + 1 != index && this.index != index)
             {
                 string strErr = "{0}号扫码流水号检正错误：上位机流水号为：[{1}]，PLC流水号为：[{2}]，请人工确认。 ";
-                Logger.Error(string.Format(strErr, ledCode, this.index + 1, index));
+                Logger.Error(string.Format(strErr, stateItemCode, this.index + 1, index));
 
                 Stack<LedItem> data = new Stack<LedItem>();
 
                 LedItem item = new LedItem();
-                item.Name = string.Format("{0}号扫码器流水号检正错误：", ledCode);
+                item.Name = string.Format("{0}扫码器流水号错误", stateItemCode);
                 data.Push(item);
 
                 item = new LedItem();
-                item.Name = string.Format("上位机当前流水号为{0},", this.index + 1);
+                item.Name = string.Format("PC流水号为：{0}", this.index + 1);
                 data.Push(item);
 
                 item = new LedItem();
-                item.Name = string.Format("PLC当前流水号为{0};", index);
+                item.Name = string.Format("PLC流水号为：{0}", index);
                 data.Push(item);
 
                 LedItem[] ledItems = data.ToArray();
@@ -89,8 +89,8 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             bool result = false;
 
             this.index++;
-            string sql = "UPDATE AS_STATEMANAGER_SCANNER SET INDEXNO = {0} WHERE STATECODE = '{1}'";
-            sql = string.Format(sql, this.index, "01");
+            string sql = "UPDATE AS_STATEMANAGER_SCANNER SET ROW_INDEX = {0} WHERE STATECODE = '{1}'";
+            sql = string.Format(sql, this.index, stateItemCode);
             ExecuteNonQuery(sql);
 
             result = true;
@@ -102,7 +102,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             bool result = false;
 
             this.index = index - 1;
-            string sql = "UPDATE AS_STATEMANAGER_SCANNER SET INDEXNO = {0} WHERE STATECODE = '{1}'";
+            string sql = "UPDATE AS_STATEMANAGER_SCANNER SET ROW_INDEX = {0} WHERE STATECODE = '{1}'";
             sql = string.Format(sql, this.index, stateItemCode);
             ExecuteNonQuery(sql);
 
@@ -117,7 +117,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
 
         public void ShowData(int index)
         {
-            string sql = "SELECT * FROM {0} WHERE INDEX > {1}";
+            string sql = "SELECT * FROM {0} WHERE ROW_INDEX > {1}";
             sql = string.Format(sql, dataView, index);
             DataTable table = ExecuteQuery(sql).Tables[0];
             LedItem[] ledItems = TableToLedItemArray(table);
@@ -178,7 +178,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             
             int[] data = new int[2];
 
-            string sql = "SELECT * FROM {0} WHERE INDEX = {1}";
+            string sql = "SELECT * FROM {0} WHERE ROW_INDEX  = {1}";
             sql = string.Format(sql, dataView, this.index);
             DataTable table = ExecuteQuery(sql).Tables[0];
 
@@ -187,6 +187,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             if (dispatcher.WriteToService(plcServicesName, releaseItemName, data))
             {
                 result = true;
+                Logger.Info(string.Format("写分流数据成功，目标：'{0}'", data[0]));
             }
 
             return result;

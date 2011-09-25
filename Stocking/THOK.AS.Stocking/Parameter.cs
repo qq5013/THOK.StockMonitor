@@ -159,6 +159,15 @@ namespace THOK.AS.Stocking
             set { led_02_ChannelCode = value; }
         }
 
+        private string led_03_ChannelCode = "";
+
+        [CategoryAttribute("LED显示屏参数"), DescriptionAttribute("三号屏烟道编码"), Chinese("三号屏烟道编码")]
+        public string LED_03_CHANNELCODE
+        {
+            get { return led_03_ChannelCode; }
+            set { led_03_ChannelCode = value; }
+        }
+
         private string supplyToSortLine = "";
 
         [CategoryAttribute("补货方向强制干预控制"), DescriptionAttribute("分拣线代码［00：自动（不干预）；01：一号线；02：二号线；］"), Chinese("分拣线代码［00：自动（不干预）；01：一号线；02：二号线；］")]

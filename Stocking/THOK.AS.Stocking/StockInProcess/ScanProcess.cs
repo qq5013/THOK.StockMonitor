@@ -76,7 +76,7 @@ namespace THOK.AS.Stocking.StockInProcess
         public override void Initialize(Context context)
         {
             base.Initialize(context);
-            //scannerParameters = SerializableScannerParameters.Deserialize();
+            scannerParameters = SerializableScannerParameters.Deserialize();
         }
 
         protected override void StateChanged(StateItem stateItem, IProcessDispatcher dispatcher)
@@ -225,7 +225,6 @@ namespace THOK.AS.Stocking.StockInProcess
                                 return;
                             }
                         }
-                        Scanner_Process_StockOut(scannerCode, barcode);
                         break;
                 }
 

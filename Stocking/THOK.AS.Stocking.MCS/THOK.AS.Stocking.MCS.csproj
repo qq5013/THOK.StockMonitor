@@ -33,10 +33,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="THOK.MCP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Reference\THOK.MCP.dll</HintPath>
-    </Reference>
     <Reference Include="THOK.MCP.Service.Siemens, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Reference\THOK.MCP.Service.Siemens.dll</HintPath>
@@ -83,6 +79,9 @@
     <Content Include="App.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Image\a.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Image\App.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -96,12 +95,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\S1.0002.gif" />
-    <Content Include="Monitor.xml" />
+    <Content Include="Monitor.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scanner.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SortPLC_01.xml" />
-    <Content Include="SortPLC_02.xml" />
+    <Content Include="SortPLC_01.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SortPLC_02.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="StockPLC_01.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -125,6 +130,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\THOK.MCP\THOK.MCP.csproj">
+      <Project>{D162AF5E-4A8A-4FEB-AAD2-4E7143CB38A7}</Project>
+      <Name>THOK.MCP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\THOK.AS.Stocking\THOK.AS.Stocking.csproj">
       <Project>{7C262527-51F1-4586-B590-9F2AD56EDAAC}</Project>
       <Name>THOK.AS.Stocking</Name>

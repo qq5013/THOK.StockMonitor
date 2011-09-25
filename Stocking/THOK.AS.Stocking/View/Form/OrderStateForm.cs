@@ -50,7 +50,7 @@ namespace THOK.AS.Stocking.View
                         string indexNo = "";
 
                         stateCode = stateQueryDialog.SelectedQueryType.ToString();
-                        indexNo = stateDao.FindScannerIndexNoByStateCode(stateCode).Rows[0]["INDEXNO"].ToString();
+                        indexNo = stateDao.FindScannerIndexNoByStateCode(stateCode).Rows[0]["ROW_INDEX"].ToString();
                         bsMain.DataSource = stateDao.FindOrderStateByIndexNo(indexNo);
                     }
                 }
