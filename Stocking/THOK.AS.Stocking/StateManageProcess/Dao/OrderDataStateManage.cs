@@ -54,7 +54,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             DataTable table = ExecuteQuery(sql).Tables[0];
 
             this.dataView = table.Rows[0]["VIEWNAME"].ToString();
-            this.index =Convert.ToInt32(table.Rows[0]["INDEXNO"].ToString());
+            this.index =Convert.ToInt32(table.Rows[0]["ROW_INDEX"].ToString());
             this.plcServicesName = table.Rows[0]["PLCSERVICESNAME"].ToString();
             this.orderItemName = table.Rows[0]["ORDERITEMNAME"].ToString();
             this.checkItemName = table.Rows[0]["CHECKITEMNAME"].ToString();
@@ -78,7 +78,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             bool result = false;
 
             this.index = index - 1;
-            string sql = "UPDATE AS_STATEMANAGER_ORDER SET INDEXNO = {0} WHERE STATECODE = '{1}'";
+            string sql = "UPDATE AS_STATEMANAGER_ORDER SET ROW_INDEX = {0} WHERE STATECODE = '{1}'";
             sql = string.Format(sql, this.index, stateItemCode);
             ExecuteNonQuery(sql);            
     
@@ -98,7 +98,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             //给PLC写订单数据 
             Stack<int> data = new Stack<int>();
 
-            string sql = "SELECT TOP {0} * FROM {1} WHERE INDEX > {2}";
+            string sql = "SELECT TOP {0} * FROM {1} WHERE ROW_INDEX > {2}";
             sql = string.Format(sql,quantity,dataView, this.index);
             DataTable table = ExecuteQuery(sql).Tables[0];
 
@@ -122,7 +122,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
 
             if (dispatcher.WriteToService(plcServicesName, orderItemName,dataItems))
             {
-                sql = "UPDATE AS_STATEMANAGER_ORDER SET INDEXNO = {0} WHERE STATECODE = '{1}'";
+                sql = "UPDATE AS_STATEMANAGER_ORDER SET ROW_INDEX = {0} WHERE STATECODE = '{1}'";
                 sql = string.Format(sql, this.index, stateItemCode);
                 ExecuteNonQuery(sql);
                 result = true;

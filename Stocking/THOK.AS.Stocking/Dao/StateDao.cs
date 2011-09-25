@@ -19,18 +19,18 @@ namespace THOK.AS.Stocking.Dao
         }
 
         /// <summary>
-        /// 根据状态管理器编号查找相应的INDEXNO
+        /// 根据状态管理器编号查找相应的ROW_INDEX
         /// </summary>
         /// <param name="stateCode">状态管理器编号</param>
         /// <returns></returns>
         public DataTable FindScannerIndexNoByStateCode(string stateCode)
         {
-            string sql = string.Format("SELECT INDEXNO FROM dbo.AS_STATEMANAGER_SCANNER WHERE STATECODE='{0}'",stateCode);
+            string sql = string.Format("SELECT ROW_INDEX FROM dbo.AS_STATEMANAGER_SCANNER WHERE STATECODE='{0}'",stateCode);
             return ExecuteQuery(sql).Tables[0];
         }
 
         /// <summary>
-        /// 根据INDEXNO查询订单的信息
+        /// 根据ROW_INDEX查询订单的信息
         /// </summary>
         /// <param name="indexNo">流水号</param>
         /// <returns></returns>

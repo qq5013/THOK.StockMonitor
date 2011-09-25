@@ -54,7 +54,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             DataTable table = ExecuteQuery(sql).Tables[0];
             
             this.dataView = table.Rows[0]["VIEWNAME"].ToString();
-            this.index = Convert.ToInt32(table.Rows[0]["INDEXNO"].ToString());
+            this.index = Convert.ToInt32(table.Rows[0]["ROW_INDEX"].ToString());
             this.plcServicesName = table.Rows[0]["PLCSERVICESNAME"].ToString();
             this.releaseItemName = table.Rows[0]["RELEASEITEMNAME"].ToString();
             this.ledCode = table.Rows[0]["LEDCODE"].ToString();
@@ -65,12 +65,12 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             if (this.index + 1 != index && this.index != index )
             {
                 string strErr = "{0}号LED流水号检正错误：上位机当前流水号为{1},PLC当前流水号为{2}; ";
-                Logger.Error(string.Format(strErr, ledCode,this.index + 1, index));
+                Logger.Error(string.Format(strErr, stateItemCode,this.index + 1, index));
 
                 Stack<LedItem> data = new Stack<LedItem>();
 
                 LedItem item = new LedItem();
-                item.Name = string.Format("{0}号LED流水号检正错误：", ledCode);
+                item.Name = string.Format("{0}号LED流水号检正错误：", stateItemCode);
                 data.Push(item);
 
                 item = new LedItem();
@@ -96,7 +96,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             bool result = false;
 
             this.index = index - 1;
-            string sql = "UPDATE AS_STATEMANAGER_LED SET INDEXNO = {0} WHERE STATECODE = '{1}'";
+            string sql = "UPDATE AS_STATEMANAGER_LED SET ROW_INDEX = {0} WHERE STATECODE = '{1}'";
             sql = string.Format(sql,this.index, stateItemCode);
             ExecuteNonQuery(sql);
 
@@ -109,7 +109,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             bool result = false;
 
             this.index++;
-            string sql = "UPDATE AS_STATEMANAGER_LED SET INDEXNO = {0} WHERE STATECODE = '{1}'";
+            string sql = "UPDATE AS_STATEMANAGER_LED SET ROW_INDEX = {0} WHERE STATECODE = '{1}'";
             sql = string.Format(sql,this.index, stateItemCode);
             ExecuteNonQuery(sql);
 
@@ -124,7 +124,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
 
         public void ShowData(int index)
         {
-            string sql = "SELECT * FROM {0} WHERE INDEX > {1}";
+            string sql = "SELECT * FROM {0} WHERE ROW_INDEX > {1}";
             sql = string.Format(sql, dataView,index);
             DataTable table = ExecuteQuery(sql).Tables[0];
             LedItem[] ledItems = TableToLedItemArray(table);

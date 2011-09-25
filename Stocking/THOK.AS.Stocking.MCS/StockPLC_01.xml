@@ -2,13 +2,35 @@
 <Config>
 	<OPCServer ConnectionString="OPC.SimaticNET">
 		<OPCGroup GroupName="DefaultGroup" GroupString="S7:[@LOCALSERVER]" UpdateRate="350">
-			<OPCItem ItemName="RestartData" ClientHandler="1" OPCItemName="DB1,INT8,1"  ItemType="WRITE"/>
-			<OPCItem ItemName="DataRequest" ClientHandler="2" OPCItemName="DB1,INT0,1"	 ItemType="READ"/>
+			<OPCItem ItemName="RestartData" ClientHandler="1" OPCItemName="DB1,INT0,1"  ItemType="WRITE"/>
+			<OPCItem ItemName="DataRequest" ClientHandler="2" OPCItemName="DB1,INT2,1"	 ItemType="READ"/>
 			<OPCItem ItemName="OutData"	ClientHandler="3" OPCItemName="DB1,INT0,162" ItemType="WRITE"/>
-			<OPCItem ItemName="Scanner_DirectoryData_01" ClientHandler="4" OPCItemName="DB1,INT2,2" ItemType="WRITE"/>
-      
-      <OPCItem ItemName="ErrTag_01" ClientHandler="5" OPCItemName="DB1,INT1,4" ItemType="READ"/>
-      <OPCItem ItemName="ErrReset_01" ClientHandler="6" OPCItemName="DB1,INT1,6" ItemType="READ"/>
+			<OPCItem ItemName="Scanner_DirectoryData_01" ClientHandler="4" OPCItemName="DB1,INT2,3" ItemType="WRITE"/>
+
+			<OPCItem ItemName="ErrTag_01" ClientHandler="5" OPCItemName="DB1,INT1,4" ItemType="READ"/>
+			<OPCItem ItemName="ErrReset_01" ClientHandler="6" OPCItemName="DB1,INT1,6" ItemType="READ"/>
+
+			<OPCItem ItemName="01_OrderDataMoveNext" ClientHandler="7" OPCItemName="DB1,INT128,1" ItemType="READ"/>
+			<OPCItem ItemName="01_OrderDataMoveTo" ClientHandler="8" OPCItemName="DB1,INT130,1" ItemType="READ"/>
+			<!--<OPCItem ItemName="01_OrderData" ClientHandler="9" OPCItemName="DB3,INT0,53" ItemType="WRITE"/>-->
+			
+
 		</OPCGroup>
 	</OPCServer>
 </Config>
+
+
+<!--<?xml version='1.0' ?>
+<Config>
+	<OPCServer ConnectionString="OPC.SimaticNET">
+		<OPCGroup GroupName="DefaultGroup" GroupString="S7:[@LOCALSERVER]" UpdateRate="350">
+			<OPCItem ItemName="RestartData" ClientHandler="1" OPCItemName="DB1,INT0,1"  ItemType="WRITE"/>
+			<OPCItem ItemName="DataRequest" ClientHandler="2" OPCItemName="DB1,INT2,1"	 ItemType="READ"/>
+			<OPCItem ItemName="OutData"	ClientHandler="3" OPCItemName="DB500,INT0,53" ItemType="WRITE"/>
+			<OPCItem ItemName="Scanner_DirectoryData_01" ClientHandler="4" OPCItemName="DB1,INT2,2" ItemType="WRITE"/>
+      
+      <OPCItem ItemName="ErrTag_01" ClientHandler="5" OPCItemName="DB1,INT1,4" ItemType="READ"/>
+      <OPCItem ItemName="ErrReset_01" ClientHandler="6" OPCItemName="DB1,INT1,6" ItemType="WRITE"/>
+		</OPCGroup>
+	</OPCServer>
+</Config>-->

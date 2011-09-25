@@ -91,7 +91,7 @@ namespace THOK.AS.Stocking.MCS
                 initialize.InitializeContext(context);
                 context.RegisterProcessControl(monitorView);
 
-                context.Processes["DynamicShowProcess"].Resume();
+                //context.Processes["DynamicShowProcess"].Resume();
             }
             catch (Exception ee)
             {

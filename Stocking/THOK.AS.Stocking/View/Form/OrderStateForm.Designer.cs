@@ -32,9 +32,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvMain = new System.Windows.Forms.DataGridView();
+            this.bsMain = new System.Windows.Forms.BindingSource(this.components);
             this.btnExit = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.bsMain = new System.Windows.Forms.BindingSource(this.components);
             this.Column1 = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.Column2 = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.Column3 = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
@@ -172,7 +172,7 @@
             // 
             // Column8
             // 
-            this.Column8.DataPropertyName = "STATE";
+            this.Column8.DataPropertyName = "SCANNERSTATE";
             this.Column8.FilteringEnabled = false;
             this.Column8.HeaderText = "扫描状态";
             this.Column8.Name = "Column8";

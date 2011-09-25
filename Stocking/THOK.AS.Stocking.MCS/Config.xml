@@ -8,11 +8,12 @@
 		<Attribute Name="MaxLEDFormWidth" Value="500" />
 		<Attribute Name="MaxLEDFormHeight" Value="300" />
 		<Attribute Name="LED_01_CHANNELCODE" Value="0004" />
-		<Attribute Name="LED_02_CHANNELCODE" Value="0017" />      
+		<Attribute Name="LED_02_CHANNELCODE" Value="0017" />
+		<Attribute Name="LED_03_CHANNELCODE" Value="0005"/>
 		<Attribute Name="SupplyToSortLine" Value="00" />
 		<Attribute Name="IsMerge" Value="true" />
 		<Attribute Name="StockRemainQuantity" Value="0" />
-		<Attribute Name="IsActiveLeds" Value="1,192.168.1.11;2,192.168.1.12" />
+		<Attribute Name="IsActiveLeds" Value="1,192.168.1.10;2,192.168.1.11;3,192.168.1.12" />
 		<Attribute Name="StockInRequestRemainQuantity" Value="10" />
 		<Attribute Name="SupplyAheadCount-01-1" Value="10" />
 		<Attribute Name="SupplyAheadCount-01-2" Value="12" />
@@ -53,18 +54,24 @@
 		
 		<!--状态管理器添加-->
 		<Process Name="OrderDataStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.OrderDataStateProcess">
-			<Item ServiceName="StockPLC_02" ItemName="01_OrderDataMoveNext"/>
-			<Item ServiceName="StockPLC_02" ItemName="01_OrderDataMoveTo"/>
+			<Item ServiceName="StockPLC_01" ItemName="01_OrderDataMoveNext"/>
+			<Item ServiceName="StockPLC_01" ItemName="01_OrderDataMoveTo"/>
+			
+			<Item ServiceName="StockPLC_02" ItemName="02_OrderDataMoveNext"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_OrderDataMoveTo"/>
+			
 		</Process>		
 		<Process Name="LedStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.LedStateProcess">
-			<Item ServiceName="StockPLC_02" ItemName="01_LedMoveNext"/>
-			<Item ServiceName="StockPLC_02" ItemName="01_LedMoveTo"/>
-			<Item ServiceName="StockPLC_02" ItemName="01_LedShowData"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_LedMoveNext"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_LedMoveTo"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_LedShowData"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_ReleaseLed"/>
 		</Process>
 		<Process Name="ScannerStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.ScannerStateProcess">
-			<Item ServiceName="StockPLC_02" ItemName="01_ScannerMoveNext"/>
-			<Item ServiceName="StockPLC_02" ItemName="01_ScannerMoveTo"/>
-			<Item ServiceName="StockPLC_02" ItemName="01_ScannerShowData"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_ScannerMoveNext"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_ScannerMoveTo"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_ScannerShowData"/>
+			<Item ServiceName="StockPLC_02" ItemName="02_ReleaseScanner"/>
 			<Item ServiceName="Scanner" ItemName="02" Desc="扫描器主站02" />
 		</Process>
 	</Processes>

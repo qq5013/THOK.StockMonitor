@@ -5,9 +5,9 @@ using THOK.MCP;
 using THOK.Util;
 using THOK.AS.Stocking.StateManageProcess.Dao;
 
-namespace THOK.AS.Stocking.StateManageProcess.StateManage
+namespace THOK.AS.Stocking.StateManageProcess
 {
-    class ScannerProcess : AbstractProcess
+    class ScannerStateProcess : AbstractProcess
     {
         /// <summary>
         /// 状态管理器列表
