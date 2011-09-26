@@ -64,17 +64,17 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
         {
             if (this.index + 1 != index && this.index != index )
             {
-                string strErr = "{0}号LED流水号检正错误：上位机当前流水号为{1},PLC当前流水号为{2}; ";
+                string strErr = "{0}号LED流水号校验错误：上位机当前流水号为{1},PLC当前流水号为{2}; ";
                 Logger.Error(string.Format(strErr, stateItemCode,this.index + 1, index));
 
                 Stack<LedItem> data = new Stack<LedItem>();
 
                 LedItem item = new LedItem();
-                item.Name = string.Format("{0}号LED流水号检正错误：", stateItemCode);
+                item.Name = string.Format("{0}号LED流水号校验错误：", stateItemCode);
                 data.Push(item);
 
                 item = new LedItem();
-                item.Name = string.Format("上位机当前流水号为{0},", this.index + 1);
+                item.Name = string.Format("PC当前流水号为{0},", this.index + 1);
                 data.Push(item);
 
                 item = new LedItem();

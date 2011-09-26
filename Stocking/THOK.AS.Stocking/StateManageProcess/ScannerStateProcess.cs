@@ -95,7 +95,7 @@ namespace THOK.AS.Stocking.StateManageProcess
                                 {
                                     if (scannerStateManage.MoveNext())
                                     {
-                                        scannerStateManage.WriteToPlc();
+                                        scannerStateManage.WriteToPlc(this.Context);
                                     }
                                     scannerStateManage.ShowData();
                                 }
@@ -109,7 +109,7 @@ namespace THOK.AS.Stocking.StateManageProcess
                                 {
                                     if (scannerStateManage.MoveNext())
                                     {
-                                        scannerStateManage.WriteToPlc();
+                                        scannerStateManage.WriteToPlc(this.Context);
                                     }
                                 }
                                 scannerStateManage.ShowData();

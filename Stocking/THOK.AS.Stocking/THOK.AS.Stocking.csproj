@@ -58,6 +58,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Reference\THOK.AF.View.dll</HintPath>
     </Reference>
+    <Reference Include="THOK.MCP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Reference\THOK.MCP.dll</HintPath>
+    </Reference>
     <Reference Include="THOK.MCP.Service.Sick, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Reference\THOK.MCP.Service.Sick.dll</HintPath>
@@ -353,12 +357,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\THOK.MCP\THOK.MCP.csproj">
-      <Project>{D162AF5E-4A8A-4FEB-AAD2-4E7143CB38A7}</Project>
-      <Name>THOK.MCP</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

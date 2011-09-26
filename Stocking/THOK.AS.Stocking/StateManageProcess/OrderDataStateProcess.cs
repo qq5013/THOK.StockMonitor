@@ -68,10 +68,10 @@ namespace THOK.AS.Stocking.StateManageProcess
                         case "OrderDataMoveNext":
                             index = Convert.ToInt32(THOK.MCP.ObjectUtil.GetObject(stateItem.State));
                             if (index != 0 && orderDataStateManage.Check(index))
-                            {
-                                if (orderDataStateManage.WriteToPlc())
+                            {                               
+                                if (!orderDataStateManage.WriteToPlc())
                                 {
-                                    Logger.Info(string.Format("订单数据写入成功流水号：[{0}]",index));
+                                    Logger.Info(string.Format("{0} 号订单请求，订单数据写入失败流水号：[{1}]", stateItemCode, index));
                                 }
                             }
                             break;
@@ -87,7 +87,7 @@ namespace THOK.AS.Stocking.StateManageProcess
             }
             catch (Exception e)
             {
-                Logger.Error("OrderProcess.StateChanged() 处理失败！原因：" + e.Message);
+                Logger.Error("OrderDataStateProcess.StateChanged() 处理失败！原因：" + e.Message);
             }
         }
     }

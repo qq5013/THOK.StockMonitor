@@ -82,9 +82,9 @@ namespace THOK.AS.Stocking.StateManageProcess
                                 {
                                     if (ledStateManage.MoveNext())
                                     {
-                                        if(ledStateManage.WriteToPlc())
+                                        if(!ledStateManage.WriteToPlc())
                                         {
-                                            //todo;
+                                            Logger.Info(string.Format("{0} 号LED请求通过，写入放行失败流水号：[{1}]", stateItemCode, index));
                                         }
                                     }
                                 }

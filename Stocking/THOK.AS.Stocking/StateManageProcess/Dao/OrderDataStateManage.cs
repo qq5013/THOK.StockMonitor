@@ -65,8 +65,8 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
         {
             if (this.index + 1 != index)
             {
-                string str = "订单流水号校正错误：上位机流水号为：[{0}]，PLC流水号为：[{1}]，请人工确认。";
-                Logger.Error(string.Format(str, this.index+1, index));
+                string str = "{0} 号订单请求，订单流水号校验错误：上位机流水号为：[{1}]，PLC流水号为：[{2}]，请人工确认。";
+                Logger.Error(string.Format(stateItemCode, str,this.index + 1, index));
                 return false;
             }
             else
@@ -84,7 +84,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
     
             //写校正完成标志到PLC
             dispatcher.WriteToService(plcServicesName,checkItemName,1);
-            Logger.Info("订单校正完成");
+            Logger.Info(string.Format("{0} 号订单请求，订单校正完成",stateItemCode));
 
             result = true;
             return result;
@@ -126,6 +126,10 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
                 sql = string.Format(sql, this.index, stateItemCode);
                 ExecuteNonQuery(sql);
                 result = true;
+            }
+            if (result && table.Rows.Count > 0)
+            {
+                 Logger.Info(string.Format("{0} 号订单请求，订单数据写入成功流水号：[{1}]",stateItemCode,index));
             }
             return result;
         }

@@ -11,7 +11,7 @@ namespace THOK.AS.Stocking.Util.LED2008
         public int Count = 0;
         public override string ToString()
         {
-            return string.Format("{0}-{1}", Count.ToString().PadLeft(2, ' '), Name);
+            return string.Format("{0}-{1}",Count>0? Count.ToString().PadLeft(2, ' '):"", Name);
         }
     }
 

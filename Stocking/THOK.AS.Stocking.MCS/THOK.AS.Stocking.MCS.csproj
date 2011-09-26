@@ -33,6 +33,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="THOK.MCP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Reference\THOK.MCP.dll</HintPath>
+    </Reference>
     <Reference Include="THOK.MCP.Service.Siemens, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Reference\THOK.MCP.Service.Siemens.dll</HintPath>
@@ -130,10 +134,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\THOK.MCP\THOK.MCP.csproj">
-      <Project>{D162AF5E-4A8A-4FEB-AAD2-4E7143CB38A7}</Project>
-      <Name>THOK.MCP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\THOK.AS.Stocking\THOK.AS.Stocking.csproj">
       <Project>{7C262527-51F1-4586-B590-9F2AD56EDAAC}</Project>
       <Name>THOK.AS.Stocking</Name>
