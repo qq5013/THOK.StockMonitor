@@ -38,7 +38,7 @@
 		<Process Name="SupplyRequestProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StockOutProcess.SupplyRequestProcess">
 			<Item ServiceName="UDPService" ItemName="SupplyRequest" />
 		</Process>
-		<Process Name="DataRequestProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StockOutProcess.DataReuqestProcess" Suspend="true">
+		<Process Name="DataRequestProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StockOutProcess.DataReuqestProcess" >
 			<Item ServiceName="StockPLC_01" ItemName="DataRequest" />
 		</Process>
 		<Process Name="ScanProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StockInProcess.ScanProcess">
@@ -53,7 +53,7 @@
 		</Process>-->
 		
 		<!--状态管理器添加-->
-		<Process Name="OrderDataStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.OrderDataStateProcess">
+		<Process Name="OrderDataStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.OrderDataStateProcess" Suspend="true" >
 			<Item ServiceName="StockPLC_01" ItemName="01_OrderDataMoveNext"/>
 			<Item ServiceName="StockPLC_01" ItemName="01_OrderDataMoveTo"/>
 			

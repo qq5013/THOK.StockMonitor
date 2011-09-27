@@ -61,7 +61,7 @@ namespace THOK.AS.Stocking.Dao
                             " LEFT JOIN AS_BI_SUPPLYCAR B ON A.LINECODE = B.LINECODE AND A.CHANNELCODE = B.CHANNELCODE" +
                             " LEFT JOIN V_STOCKCHANNEL C ON A.CIGARETTECODE = C.CIGARETTECODE " + //!!!@
                             " LEFT JOIN AS_SC_CHANNELUSED D ON A.LINECODE = D.LINECODE AND A.CHANNELCODE = D.CHANNELCODE"+
-                            " WHERE C.CHANNELTYPE = 2 AND D.CHANNELTYPE = 3" +
+                            " WHERE  (C.CHANNELTYPE =1 OR C.CHANNELTYPE = 2) AND D.CHANNELTYPE = 3" +
                             " UNION " +
                          " SELECT A.STOCKOUTID,A.LINECODE,A.CIGARETTECODE,A.CIGARETTENAME,D.CHANNELNAME AS SORT_CHANNELNAME," +
                             " CASE WHEN A.STATE=1 THEN 'ÒÑ·¢ËÍ' ELSE 'Î´·¢ËÍ' END STATE," +

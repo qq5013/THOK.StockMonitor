@@ -111,6 +111,7 @@ namespace THOK.AS.Stocking.StockOutProcess
 
                             Logger.Info("生产第一批次出库任务成功");
                             WriteToProcess("LedStateProcess", "Refresh", null);
+                            WriteToProcess("ScannerStateProcess", "Refresh", null);
                         }
                         catch (Exception e)
                         {

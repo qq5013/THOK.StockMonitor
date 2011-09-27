@@ -337,24 +337,22 @@ namespace THOK.AS.Stocking.StockInProcess
                             }
                             else
                             {
-                                scannerParameters.SetParameter(scannerCode, "Quantity", 1);
-                                WriteToProcess("DataRequestProcess", "StockInRequest", 1);
+                                scannerParameters.SetParameter(scannerCode, "Quantity", 1);                                
                             }
                         }
                         else
                         {
                             scannerParameters.SetParameter(scannerCode, "Barcode", barcode);
                             scannerParameters.SetParameter(scannerCode, "Quantity", 1);
-                            WriteToProcess("DataRequestProcess", "StockInRequest", 1);
                         }
 
                         if (Convert.ToInt32(stockInTable.Rows[0]["QUANTITY"]) <= 1)
                         {
                             scannerParameters.SetParameter(scannerCode, "Barcode", "");
                             scannerParameters.SetParameter(scannerCode, "Quantity", 5);
-                            WriteToProcess("DataRequestProcess", "StockInRequest", 1);
                         }
 
+                        WriteToProcess("DataRequestProcess", "StockInRequest", 1);
                         WriteToProcess("LEDProcess", "Refresh", null);
                         Logger.Info(string.Format(scannerCode + "号条码扫描，写分流数据，卷烟名称:{0}，目标:{1} ！", stockInTable.Rows[0]["CIGARETTENAME"], Convert.ToInt32(stockInTable.Rows[0]["CHANNELCODE"].ToString())));
                     }

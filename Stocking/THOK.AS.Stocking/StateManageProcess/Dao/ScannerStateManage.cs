@@ -125,7 +125,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             string sql = "UPDATE AS_STATEMANAGER_SCANNER SET ROW_INDEX = {0} WHERE STATECODE = '{1}'";
             sql = string.Format(sql, this.index, stateItemCode);
             ExecuteNonQuery(sql);
-
+            Logger.Info(string.Format("{0} 号扫码器，校正完成,流水号：{1}", stateItemCode, index));
             result = true;
             return result;
         }
@@ -202,29 +202,49 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             sql = string.Format(sql, dataView, this.index);
             DataTable table = ExecuteQuery(sql).Tables[0];
 
-            int lineCode = Convert.ToInt32(table.Rows[0]["LINECODE"]);
-
-            switch (context.Attributes["SupplyToSortLine"].ToString())
+            if (table.Rows.Count > 0)
             {
-                case "01":
-                    lineCode = 1;
-                    break;
-                case "02":
-                    lineCode = 2;
-                    break;
-                default:
-                    break;
+                int lineCode = Convert.ToInt32(table.Rows[0]["LINECODE"]);
+
+                switch (context.Attributes["SupplyToSortLine"].ToString())
+                {
+                    case "01":
+                        lineCode = 1;
+                        break;
+                    case "02":
+                        lineCode = 2;
+                        break;
+                    default:
+                        break;
+                }
+
+                int supplyAddress = Convert.ToInt32(lineCode.ToString() + table.Rows[0]["SUPPLYADDRESS"].ToString().PadLeft(2, "0"[0]));
+
+                data[0] = supplyAddress;
+                data[1] = this.index;
+
+                if (dispatcher.WriteToService(plcServicesName, releaseItemName, data))
+                {
+                    result = true;
+                    Logger.Info(string.Format("{0}号扫码器，写分流数据成功，目标：'{1}'", stateItemCode, data[0]));
+                }
             }
-
-            int supplyAddress = Convert.ToInt32(lineCode.ToString() + table.Rows[0]["SUPPLYADDRESS"].ToString().PadLeft(2, "0"[0]));
-
-            data[0] = supplyAddress; 
-            data[1] = this.index;
-
-            if (dispatcher.WriteToService(plcServicesName, releaseItemName, data))
+            else
             {
-                result = true;
-                Logger.Info(string.Format("{0}号扫码器，写分流数据成功，目标：'{1}'",stateItemCode,data[0]));
+                Logger.Info(string.Format("{0}号扫码器，无任务数据！", stateItemCode));
+
+                Stack<LedItem> LedItemData = new Stack<LedItem>();
+
+                LedItem item = new LedItem();
+                item.Name = string.Format("{0}号扫码器，无任务数据！", stateItemCode);
+                LedItemData.Push(item);
+
+                LedItem[] ledItems = LedItemData.ToArray();
+                Array.Reverse(ledItems);
+
+                Show(ledItems);
+
+                result = false;
             }
 
             return result;
