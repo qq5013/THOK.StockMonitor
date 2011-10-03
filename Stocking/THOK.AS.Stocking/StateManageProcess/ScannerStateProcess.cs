@@ -120,6 +120,7 @@ namespace THOK.AS.Stocking.StateManageProcess
                             if (index != 0)
                             {
                                 scannerStateManage.MoveTo(index);
+                                Logger.Info(string.Format("{0} 号扫码器，校正完成,流水号：{1}", stateItemCode, index));
                                 scannerStateManage.ShowData();
                             }
                             break;

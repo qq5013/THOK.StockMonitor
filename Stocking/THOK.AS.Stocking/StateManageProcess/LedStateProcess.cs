@@ -96,6 +96,7 @@ namespace THOK.AS.Stocking.StateManageProcess
                             if (index != 0)
                             {
                                 ledStateManage.MoveTo(index);
+                                Logger.Info(string.Format("{0} 号LED，校正完成,流水号：{1}", stateItemCode, index));
                                 ledStateManage.ShowData();
                             }                            
                             break;
