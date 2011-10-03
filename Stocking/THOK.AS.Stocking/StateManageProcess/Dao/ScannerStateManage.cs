@@ -125,7 +125,6 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             string sql = "UPDATE AS_STATEMANAGER_SCANNER SET ROW_INDEX = {0} WHERE STATECODE = '{1}'";
             sql = string.Format(sql, this.index, stateItemCode);
             ExecuteNonQuery(sql);
-            Logger.Info(string.Format("{0} 号扫码器，校正完成,流水号：{1}", stateItemCode, index));
             result = true;
             return result;
         }
