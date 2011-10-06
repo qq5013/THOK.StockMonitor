@@ -161,12 +161,12 @@ namespace THOK.AS.Stocking.View
                         DataTable table = serverDao.FindBatch();
                         if (table.Rows.Count != 0)
                         {
-                            //using (PersistentManager pmWES = new PersistentManager("WESConnection"))
-                            //{
-                            //    StockInBatchDao stockInBatchDaoWES = new StockInBatchDao();
-                            //    stockInBatchDaoWES.SetPersistentManager(pmWES);
-                            //    stockInBatchDaoWES.Delete();
-                            //}
+                            using (PersistentManager pmWES = new PersistentManager("WESConnection"))
+                            {
+                                StockInBatchDao stockInBatchDaoWES = new StockInBatchDao();
+                                stockInBatchDaoWES.SetPersistentManager(pmWES);
+                                stockInBatchDaoWES.Delete();
+                            }
                             
                             string batchID = table.Rows[0]["BATCHID"].ToString();
                             string orderDate = table.Rows[0]["ORDERDATE"].ToString();

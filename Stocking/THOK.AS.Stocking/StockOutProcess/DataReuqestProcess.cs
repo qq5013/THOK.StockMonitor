@@ -69,14 +69,14 @@ namespace THOK.AS.Stocking.StockOutProcess
                     }
                     catch (Exception e)
                     {
-                        Logger.Error("处理出库数据失败，原因：1" + e.Message);
+                        Logger.Error("处理出库数据失败，原因：" + e.Message);
                         pm.Rollback();
                     }
                 }                
             }
             catch (Exception e)
             {
-                Logger.Error("处理出库数据失败，原因：2" + e.Message);
+                Logger.Error("处理出库数据失败，原因：" + e.Message);
             }
         }
     }
