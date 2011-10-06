@@ -109,7 +109,7 @@
     <Compile Include="Dao\SupplyDao.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="StateManageProcess\ScannerStateProcess.cs" />
-    <Compile Include="StockOutProcess\DataReuqestProcess.cs" />
+    <Compile Include="StockOutProcess\DataRequestProcess.cs" />
     <Compile Include="StockInProcess\LEDProcess.cs" />
     <Compile Include="StockInProcess\ScanProcess.cs" />
     <Compile Include="StockInProcess\StockInRequestProcess.cs" />

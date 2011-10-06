@@ -9,7 +9,7 @@ using THOK.AS.Stocking.Dao;
 
 namespace THOK.AS.Stocking.StockOutProcess
 {
-    public class DataReuqestProcess: AbstractProcess
+    public class DataRequestProcess: AbstractProcess
     {
         protected override void StateChanged(StateItem stateItem, IProcessDispatcher dispatcher)
         {
