@@ -148,7 +148,7 @@ namespace THOK.AS.Stocking.Dao
             {
                 SqlCreate sqlCreate = new SqlCreate("AS_STOCK_OUT", SqlType.INSERT);
                 sqlCreate.Append("STOCKOUTID", ++outID);
-                sqlCreate.Append("ORDERDATE", row["ORDERDATE"]);
+                sqlCreate.AppendQuote("ORDERDATE", row["ORDERDATE"]);
                 sqlCreate.Append("BATCHNO", row["BATCHNO"]);
                 sqlCreate.AppendQuote("LINECODE", row["LINECODE"]);
                 sqlCreate.Append("SORTNO", row["SORTNO"]);

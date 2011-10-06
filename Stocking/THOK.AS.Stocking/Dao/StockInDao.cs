@@ -72,7 +72,7 @@ namespace THOK.AS.Stocking.Dao
         //zys_2011-10-06
         public void UpdateStockOutIdToStockIn(DataTable table)
         {
-            DataRow[] stockInRows = table.Select(string.Format("STOCKINID IS NOT NULL AND STOCKOUTID != 0 "), "STOCKINID");
+            DataRow[] stockInRows = table.Select(string.Format("STOCKINID IS NOT NULL AND STOCKOUTID <> 0 "), "STOCKINID");
             foreach (DataRow row in stockInRows)
             {
                 SqlCreate sqlCreate = new SqlCreate("AS_STOCK_IN", SqlType.UPDATE);
