@@ -110,11 +110,10 @@
     <Compile Include="Parameter.cs" />
     <Compile Include="StateManageProcess\ScannerStateProcess.cs" />
     <Compile Include="StockOutProcess\DataReuqestProcess.cs" />
-    <Compile Include="StockOutProcess\SortStateProcess.cs" />
     <Compile Include="StockInProcess\LEDProcess.cs" />
     <Compile Include="StockInProcess\ScanProcess.cs" />
     <Compile Include="StockInProcess\StockInRequestProcess.cs" />
-    <Compile Include="StockOutProcess\SupplyRequestProcess.cs">
+    <Compile Include="StockOutProcess\SupplyFirstRequestProcess.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -147,6 +146,7 @@
     <Compile Include="StateManageProcess\Dao\OrderDataStateManage.cs" />
     <Compile Include="StateManageProcess\OrderDataStateProcess.cs" />
     <Compile Include="StateManageProcess\Dao\ScannerStateManage.cs" />
+    <Compile Include="StockOutProcess\SupplyNextRequestProcess.cs" />
     <Compile Include="Util\ZebraPrinter\BarCode.cs" />
     <Compile Include="Util\ZebraPrinter\Character.cs" />
     <Compile Include="Util\LED2008\EQ2008_DataStruct.cs" />

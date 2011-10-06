@@ -25,14 +25,7 @@ namespace THOK.AS.Stocking.Dao
             return Convert.ToInt32(ExecuteScalar(sql));
         }
 
-        public DataTable FindFirstSupply()
-        {
-            string sql = "SELECT * FROM AS_SC_SUPPLY A " +
-                         //--" LEFT JOIN V_STOCKCHANNEL B ON A.CIGARETTECODE = B.CIGARETTECODE "+ //???
-                         " WHERE SORTNO=0 " +
-                         " ORDER BY A.SERIALNO,A.LINECODE DESC,A.CHANNELGROUP DESC";
-            return ExecuteQuery(sql).Tables[0];
-        }
+
 
         public DataTable FindSupplyBatch(string lineCode, string sortNo, string channelGroup)
         {
@@ -126,6 +119,34 @@ namespace THOK.AS.Stocking.Dao
             object obj =
                 ExecuteQuery(string.Format(sql,supplyAheadCount,lineCode, sortNo, channelGroup)).Tables[0].Compute("MAX(SORTNO)", "");
             return obj is DBNull ? 0 : Convert.ToInt32(obj);
+        }
+
+        //zys_2011-10-06
+        internal DataTable FindFirstSupply()
+        {
+            string sql = @"SELECT * FROM AS_SC_SUPPLY A 
+                            WHERE SORTNO = 0 AND SERIALNO NOT IN (SELECT SERIALNO FROM AS_STOCK_OUT B
+	                            WHERE A.ORDERDATE = B.ORDERDATE AND A.BATCHNO = B.BATCHNO AND A.LINECODE = B.LINECODE )
+                            ORDER BY A.SERIALNO,A.LINECODE DESC,A.CHANNELGROUP DESC";
+            return ExecuteQuery(sql).Tables[0];
+        }
+
+        //zys_2011-10-05
+        internal DataTable FindNextSupply(string lineCode, string channelGroup, string channelType, int sortNo)
+        {
+            string sql = @"SELECT TOP 3 * FROM
+                            (
+                                SELECT ROW_NUMBER() OVER(ORDER BY A.ORDERDATE,A.BATCHNO,A.LINECODE,A.SERIALNO) ROW_INDEX,
+                                A.* FROM AS_SC_SUPPLY A
+                                LEFT JOIN AS_SC_CHANNELUSED B ON A.ORDERDATE = B.ORDERDATE 
+                                AND A.BATCHNO = B.BATCHNO AND A.LINECODE = B.LINECODE 
+                                AND A.CHANNELCODE = B.CHANNELCODE
+                                WHERE A.LINECODE ='{0}' AND A.CHANNELGROUP = '{1}' AND B.CHANNELTYPE = '{2}'
+                            ) C
+                            WHERE ROW_INDEX <= {3} AND SERIALNO NOT IN (SELECT SERIALNO FROM AS_STOCK_OUT D 
+                                WHERE C.ORDERDATE = D.ORDERDATE AND C.BATCHNO = D.BATCHNO AND C.LINECODE = D.LINECODE )
+                            ORDER BY ROW_INDEX";
+            return ExecuteQuery(string.Format(sql, lineCode, channelGroup, channelType,sortNo)).Tables[0];
         }
     }
 }

@@ -209,8 +209,9 @@ namespace THOK.AS.Stocking.View
                             Context.ProcessDispatcher.WriteToService("StockPLC_01", "RestartData", 3);
                             Context.ProcessDispatcher.WriteToService("StockPLC_02", "RestartData", 1);
 
-                            //初始化扫码器
+                            //初始化入库扫码器
                             Context.ProcessDispatcher.WriteToProcess("ScanProcess", "Init", null);
+
                             //初始化状态管理器
                             Context.ProcessDispatcher.WriteToProcess("LedStateProcess", "Init", null);
                             Context.ProcessDispatcher.WriteToProcess("OrderDataStateProcess", "Init", null);
@@ -219,9 +220,7 @@ namespace THOK.AS.Stocking.View
                             //生成入库请求任务数据
                             Context.ProcessDispatcher.WriteToProcess("StockInRequestProcess", "FirstBatch", null);
                             //生成补货请求任务数据
-                            Context.ProcessDispatcher.WriteToProcess("SupplyRequestProcess", "FirstBatch", null);
-                            //订单日期批次信息
-                            Context.ProcessDispatcher.WriteToProcess("SupplyRequestProcess", "OrderInfo", new string[] { orderDate, batchNo });                    
+                            Context.ProcessDispatcher.WriteToProcess("SupplyFirstRequestProcess", "FirstBatch", null);                   
                         }
                         else
                             MessageBox.Show("没有补货计划数据！", "消息", MessageBoxButtons.OK, MessageBoxIcon.Information);

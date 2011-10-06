@@ -20,86 +20,59 @@ namespace THOK.AS.Stocking.StockOutProcess
                     StockOutBatchDao stockOutBatchDao = new StockOutBatchDao();
                     StockOutDao stockOutDao = new StockOutDao();
                     StockInDao stockInDao = new StockInDao();
+                    stockOutBatchDao.SetPersistentManager(pm);
+                    stockOutDao.SetPersistentManager(pm);
+                    stockInDao.SetPersistentManager(pm);
 
-                    DataTable batchTable = stockOutBatchDao.FindBatch();
-                    DataTable stockInTable = stockInDao.FindStockInForIsInAndNotOut();
-
-                    if (batchTable.Rows.Count != 0)
+                    try
                     {
-                        foreach (DataRow row in batchTable.Rows)
+                        DataTable outTable = stockOutDao.FindSupply();
+                        DataTable stockInTable = stockInDao.FindStockInForIsInAndNotOut();                        
+
+                        if (outTable.Rows.Count > 0)
                         {
-                            try
+                            pm.BeginTransaction();
+
+                            for (int i = 0; i < outTable.Rows.Count; i++)
                             {
-                                string batchNo = row["BATCHNO"].ToString();
-                                DataTable outTable = stockOutDao.FindSupply(batchNo);
-                                int count = 0;
-                                int outCount = 0;
+                                DataRow[] stockInRows = stockInTable.Select(string.Format("CIGARETTECODE='{0}' AND STATE ='1' AND ( STOCKOUTID IS NULL OR STOCKOUTID = 0 )",
+                                    outTable.Rows[i]["CIGARETTECODE"].ToString()), "STOCKINID");
 
-                                if (outTable.Rows.Count > 0)
+                                if (stockInRows.Length <= Convert.ToInt32(Context.Attributes["StockInRequestRemainQuantity"]) + 1)
                                 {
-                                    if (Convert.ToBoolean(Context.Attributes["IsMerge"]))
-                                    {
-                                        outTable = stockOutDao.FindSupply();
-                                    }
+                                    WriteToProcess("StockInRequestProcess", "StockInRequest", outTable.Rows[i]["CIGARETTECODE"].ToString());
+                                }
+                                else if (stockInRows.Length > 0 && stockInRows.Length + Convert.ToInt32(stockInRows[0]["STOCKINQUANTITY"]) <= 30 + 1)
+                                {
+                                    WriteToProcess("StockInRequestProcess", "StockInRequest", outTable.Rows[i]["CIGARETTECODE"].ToString());
+                                }
 
-                                    pm.BeginTransaction();
-
-                                    for (int i = 0; i < outTable.Rows.Count; i++)
-                                    {
-                                        DataRow[] stockInRows = stockInTable.Select(string.Format("CIGARETTECODE='{0}' AND STATE ='1' AND ( STOCKOUTID IS NULL OR STOCKOUTID = 0 )", 
-                                            outTable.Rows[i]["CIGARETTECODE"].ToString()), "STOCKINID");
-
-                                        if (stockInRows.Length <= Convert.ToInt32(Context.Attributes["StockInRequestRemainQuantity"]) + 1)
-                                        {
-                                            WriteToProcess("StockInRequestProcess", "StockInRequest", outTable.Rows[i]["CIGARETTECODE"].ToString());
-                                        }
-                                        else if (stockInRows.Length > 0 && stockInRows.Length + Convert.ToInt32(stockInRows[0]["STOCKINQUANTITY"]) <= 30 + 1)
-                                        {
-                                            WriteToProcess("StockInRequestProcess", "StockInRequest", outTable.Rows[i]["CIGARETTECODE"].ToString());
-                                        }
-
-                                        if (stockInRows.Length > 0)
-                                        {
-                                            if (outTable.Rows[i]["BATCHNO"].ToString() == batchNo)
-                                            {
-                                                count++;
-                                            }
-                                            outCount++;
-
-                                            stockInRows[0]["STOCKOUTID"] = outTable.Rows[i]["STOCKOUTID"].ToString();
-                                            outTable.Rows[i]["STATE"] = 1;
-                                        }
-                                        else
-                                        {
-                                            Logger.Error(string.Format("[{0}] [{1}] 库存不足！", outTable.Rows[i]["CIGARETTECODE"].ToString(), outTable.Rows[i]["CIGARETTENAME"].ToString()));
-                                            WriteToProcess("LEDProcess", "StockInRequestShow", outTable.Rows[0]["CIGARETTENAME"]);
-                                            break;
-                                        }
-                                    }
-
-                                    if (outCount == 0)
-                                    {
-                                        return;
-                                    }
-
-                                    stockOutDao.UpdateStatus(outTable);
-                                    stockOutBatchDao.UpdateBatch(batchNo, count);
-                                    stockInDao.UpdateStockOutIdToStockIn(stockInTable);
-
-                                    pm.Commit();
-                                    Logger.Info("处理出库数据成功。");
+                                if (stockInRows.Length > 0)
+                                {
+                                    stockInRows[0]["STOCKOUTID"] = outTable.Rows[i]["STOCKOUTID"].ToString();
+                                    outTable.Rows[i]["STATE"] = 1;
                                 }
                                 else
-                                    stockOutBatchDao.UpdateBatch(batchNo, Convert.ToInt32(row["QUANTITY"].ToString()) - Convert.ToInt32(row["OUTQUANTITY"].ToString()));
+                                {
+                                    Logger.Error(string.Format("[{0}] [{1}] 库存不足！", outTable.Rows[i]["CIGARETTECODE"].ToString(), outTable.Rows[i]["CIGARETTENAME"].ToString()));
+                                    WriteToProcess("LEDProcess", "StockInRequestShow", outTable.Rows[0]["CIGARETTENAME"]);
+                                    break;
+                                }
                             }
-                            catch (Exception e)
-                            {
-                                Logger.Error("处理出库数据失败，原因：" + e.Message);
-                                pm.Rollback();
-                            }
+
+                            stockOutDao.UpdateStatus(outTable);
+                            stockInDao.UpdateStockOutIdToStockIn(stockInTable);
+
+                            pm.Commit();
+                            Logger.Info("处理出库数据成功。");
                         }
                     }
-                }
+                    catch (Exception e)
+                    {
+                        Logger.Error("处理出库数据失败，原因：" + e.Message);
+                        pm.Rollback();
+                    }
+                }                
             }
             catch (Exception e)
             {

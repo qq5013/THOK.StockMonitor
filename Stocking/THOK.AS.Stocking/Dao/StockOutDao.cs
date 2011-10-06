@@ -12,24 +12,8 @@ namespace THOK.AS.Stocking.Dao
         {
             string sql = "TRUNCATE TABLE AS_STOCK_OUT";
             ExecuteNonQuery(sql);
-        }
-
-        public void Insert(int outID, int batchNo, DataTable supplyTable)
-        {
-            foreach (DataRow row in supplyTable.Rows)
-            {
-                SqlCreate sqlCreate = new SqlCreate("AS_STOCK_OUT", SqlType.INSERT);
-                sqlCreate.Append("STOCKOUTID", ++outID);
-                sqlCreate.Append("BATCHNO", batchNo);
-                sqlCreate.AppendQuote("LINECODE", row["LINECODE"]);
-                sqlCreate.Append("SORTNO", row["SORTNO"]);
-                sqlCreate.Append("SERIALNO", row["SERIALNO"]);
-                sqlCreate.AppendQuote("CIGARETTECODE", row["CIGARETTECODE"]);
-                sqlCreate.AppendQuote("CIGARETTENAME", row["CIGARETTENAME"]);
-                sqlCreate.AppendQuote("BARCODE", row["BARCODE"]);
-                sqlCreate.AppendQuote("CHANNELCODE", row["CHANNELCODE"]);
-                ExecuteNonQuery(sqlCreate.GetSQL());
-            }
+            sql = @"UPDATE AS_STATEMANAGER_ORDER SET ROW_INDEX = 0";
+            ExecuteNonQuery(sql);
         }
 
         public int FindOutQuantity()
@@ -78,11 +62,7 @@ namespace THOK.AS.Stocking.Dao
             return ExecuteQuery(sql).Tables[0];
         }
 
-        public int FindMaxOutID()
-        {
-            string sql = "SELECT ISNULL(MAX(STOCKOUTID),0) FROM AS_STOCK_OUT";
-            return Convert.ToInt32(ExecuteScalar(sql));
-        }
+
 
         public string FindMinStockOutID(string channelCode)
         {
@@ -112,46 +92,9 @@ namespace THOK.AS.Stocking.Dao
             return ExecuteQuery(string.Format(sql, supplyCarCode)).Tables[0];
         }
 
-        /// <summary>
-        /// 合单查询，不分批次
-        /// </summary>
-        /// <returns></returns>
-        public DataTable FindSupply()
-        {
-            string sql = "SELECT TOP 160 B.CHANNELCODE SCHANNELCODE,A.* FROM AS_STOCK_OUT A "+
-                            " LEFT JOIN V_STOCKCHANNEL B ON A.CIGARETTECODE = B.CIGARETTECODE " +
-                            " WHERE STATE='0'  AND B.CHANNELTYPE = '2' ORDER BY STOCKOUTID";
-            return ExecuteQuery(sql).Tables[0];
-        }
-        /// <summary>
-        /// 分批次查询
-        /// </summary>
-        /// <param name="batchNo"></param>
-        /// <returns></returns>
-        public DataTable FindSupply(string batchNo)
-        {
-            string sql = "SELECT TOP 160 B.CHANNELCODE SCHANNELCODE,A.* FROM AS_STOCK_OUT A "+
-                            " LEFT JOIN V_STOCKCHANNEL B ON A.CIGARETTECODE = B.CIGARETTECODE " +
-                            " WHERE BATCHNO={0} AND STATE='0' AND B.CHANNELTYPE = '2' "+
-                            " ORDER BY STOCKOUTID";
-            return ExecuteQuery(string.Format(sql, batchNo)).Tables[0];
-        }
 
-        /// <summary>
-        /// 更新下单状态
-        /// </summary>
-        /// <param name="table"></param>
-        public void UpdateStatus(DataTable table)
-        {
-            DataRow[] stockOutRows = table.Select(string.Format("STATE = '1'"), "STOCKOUTID");
-            foreach (DataRow row in stockOutRows)
-            {
-                SqlCreate sqlCreate = new SqlCreate("AS_STOCK_OUT", SqlType.UPDATE);
-                sqlCreate.AppendQuote("STATE", "1");
-                sqlCreate.AppendWhere("STOCKOUTID", row["STOCKOUTID"]);
-                ExecuteNonQuery(sqlCreate.GetSQL());
-            }
-        }
+
+
 
         public DataTable FindLEDData(string channelCode)
         {            
@@ -189,6 +132,55 @@ namespace THOK.AS.Stocking.Dao
             ExecuteNonQuery(sql);
             sql = string.Format("UPDATE AS_STOCK_OUT_BATCH SET OUTQUANTITY = 0");
             ExecuteNonQuery(sql);
+        }
+
+        //zys_2011-10-06
+        internal int FindMaxOutID()
+        {
+            string sql = "SELECT ISNULL(MAX(STOCKOUTID),0) FROM AS_STOCK_OUT";
+            return Convert.ToInt32(ExecuteScalar(sql));
+        }
+
+        //zys_2011-10-05
+        internal void Insert(int outID, DataTable supplyTable)
+        {
+            foreach (DataRow row in supplyTable.Rows)
+            {
+                SqlCreate sqlCreate = new SqlCreate("AS_STOCK_OUT", SqlType.INSERT);
+                sqlCreate.Append("STOCKOUTID", ++outID);
+                sqlCreate.Append("ORDERDATE", row["ORDERDATE"]);
+                sqlCreate.Append("BATCHNO", row["BATCHNO"]);
+                sqlCreate.AppendQuote("LINECODE", row["LINECODE"]);
+                sqlCreate.Append("SORTNO", row["SORTNO"]);
+                sqlCreate.Append("SERIALNO", row["SERIALNO"]);
+                sqlCreate.AppendQuote("CIGARETTECODE", row["CIGARETTECODE"]);
+                sqlCreate.AppendQuote("CIGARETTENAME", row["CIGARETTENAME"]);
+                sqlCreate.AppendQuote("BARCODE", row["BARCODE"]);
+                sqlCreate.AppendQuote("CHANNELCODE", row["CHANNELCODE"]);
+                ExecuteNonQuery(sqlCreate.GetSQL());
+            }
+        }
+
+        //zys_2011-10-06
+        public void UpdateStatus(DataTable table)
+        {
+            DataRow[] stockOutRows = table.Select(string.Format("STATE = '1'"), "STOCKOUTID");
+            foreach (DataRow row in stockOutRows)
+            {
+                SqlCreate sqlCreate = new SqlCreate("AS_STOCK_OUT", SqlType.UPDATE);
+                sqlCreate.AppendQuote("STATE", "1");
+                sqlCreate.AppendWhere("STOCKOUTID", row["STOCKOUTID"]);
+                ExecuteNonQuery(sqlCreate.GetSQL());
+            }
+        }
+
+        //zys_2011-10-06
+        public DataTable FindSupply()
+        {
+            string sql = "SELECT B.CHANNELCODE SCHANNELCODE,A.* FROM AS_STOCK_OUT A " +
+                            " LEFT JOIN V_STOCKCHANNEL B ON A.CIGARETTECODE = B.CIGARETTECODE " +
+                            " WHERE STATE='0'  AND B.CHANNELTYPE = '2' ORDER BY STOCKOUTID";
+            return ExecuteQuery(sql).Tables[0];
         }
     }
 }

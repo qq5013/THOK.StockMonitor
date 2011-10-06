@@ -61,24 +61,7 @@ namespace THOK.AS.Stocking.Dao
             return ExecuteQuery(string.Format(sql, barcode)).Tables[0];
         }
 
-        public DataTable FindStockInForIsInAndNotOut()
-        {
-            string sql = "SELECT A.*,B.QUANTITY + D.REMAINQUANTITY - C.INQUANTITY STOCKINQUANTITY "+
-                            " FROM AS_STOCK_IN A "+
-                            " LEFT JOIN (SELECT A.CIGARETTECODE,A.CIGARETTENAME,COUNT(*) QUANTITY "+
-                            " 			  FROM AS_SC_SUPPLY A "+
-                            "             LEFT JOIN V_STOCKCHANNEL B ON A.CIGARETTECODE = B.CIGARETTECODE "+
-                            "             WHERE B.CHANNELTYPE = '2' "+
-                            "             GROUP BY A.CIGARETTECODE,A.CIGARETTENAME,B.CHANNELCODE "+
-                            "            ) B ON A.CIGARETTECODE = B.CIGARETTECODE "+
-                            " LEFT JOIN (SELECT CIGARETTECODE,ISNULL(SUM(INQUANTITY),0) INQUANTITY "+
-                            " 			FROM AS_STOCK_IN_BATCH "+
-                            " 			GROUP BY CIGARETTECODE "+
-                            " 		    ) C ON A.CIGARETTECODE = C.CIGARETTECODE "+
-                            " LEFT JOIN AS_BI_STOCKCHANNEL D ON A.CIGARETTECODE = D.CIGARETTECODE " +
-                            " WHERE A.STATE = '1' AND ( A.STOCKOUTID IS NULL OR A.STOCKOUTID = 0) ";
-            return ExecuteQuery(sql).Tables[0];
-        }
+
 
         public void UpdateScanStatus(string stockInID)
         {
@@ -86,9 +69,10 @@ namespace THOK.AS.Stocking.Dao
             ExecuteNonQuery(string.Format(sql, stockInID));
         }
 
+        //zys_2011-10-06
         public void UpdateStockOutIdToStockIn(DataTable table)
         {
-            DataRow[] stockInRows = table.Select(string.Format("STOCKINID IS NOT NULL"), "STOCKINID");
+            DataRow[] stockInRows = table.Select(string.Format("STOCKINID IS NOT NULL AND STOCKOUTID != 0 "), "STOCKINID");
             foreach (DataRow row in stockInRows)
             {
                 SqlCreate sqlCreate = new SqlCreate("AS_STOCK_IN", SqlType.UPDATE);
@@ -96,6 +80,26 @@ namespace THOK.AS.Stocking.Dao
                 sqlCreate.AppendWhere("STOCKINID", row["STOCKINID"]);
                 ExecuteNonQuery(sqlCreate.GetSQL());
             }
+        }
+
+        //zys_2011-10-06
+        public DataTable FindStockInForIsInAndNotOut()
+        {
+            string sql = "SELECT A.*,B.QUANTITY + D.REMAINQUANTITY - C.INQUANTITY STOCKINQUANTITY " +
+                            " FROM AS_STOCK_IN A " +
+                            " LEFT JOIN (SELECT A.CIGARETTECODE,A.CIGARETTENAME,COUNT(*) QUANTITY " +
+                            " 			  FROM AS_SC_SUPPLY A " +
+                            "             LEFT JOIN V_STOCKCHANNEL B ON A.CIGARETTECODE = B.CIGARETTECODE " +
+                            "             WHERE B.CHANNELTYPE = '2' " +
+                            "             GROUP BY A.CIGARETTECODE,A.CIGARETTENAME,B.CHANNELCODE " +
+                            "            ) B ON A.CIGARETTECODE = B.CIGARETTECODE " +
+                            " LEFT JOIN (SELECT CIGARETTECODE,ISNULL(SUM(INQUANTITY),0) INQUANTITY " +
+                            " 			FROM AS_STOCK_IN_BATCH " +
+                            " 			GROUP BY CIGARETTECODE " +
+                            " 		    ) C ON A.CIGARETTECODE = C.CIGARETTECODE " +
+                            " LEFT JOIN AS_BI_STOCKCHANNEL D ON A.CIGARETTECODE = D.CIGARETTECODE " +
+                            " WHERE A.STATE = '1' AND ( A.STOCKOUTID IS NULL OR A.STOCKOUTID = 0) ";
+            return ExecuteQuery(sql).Tables[0];
         }
     }
 }
