@@ -22,6 +22,7 @@ namespace THOK.AS.Stocking.View
             this.Column4.FilteringEnabled = true;
             this.Column5.FilteringEnabled = true;
             this.Column6.FilteringEnabled = true;
+            this.Column7.FilteringEnabled = true;
             this.Column8.FilteringEnabled = true;
          }
 

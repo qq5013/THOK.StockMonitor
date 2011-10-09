@@ -38,6 +38,7 @@
             this.btnOrderRefresh = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.Column1 = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.Column7 = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.Column2 = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.Column3 = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.Column4 = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
@@ -87,6 +88,7 @@
             this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
+            this.Column7,
             this.Column2,
             this.Column3,
             this.Column4,
@@ -170,6 +172,15 @@
             this.Column1.ReadOnly = true;
             this.Column1.Width = 75;
             // 
+            // Column7
+            // 
+            this.Column7.DataPropertyName = "STOCKOUTID";
+            this.Column7.FilteringEnabled = false;
+            this.Column7.HeaderText = "补货ID";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            this.Column7.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
             // Column2
             // 
             this.Column2.DataPropertyName = "LINECODE";
@@ -248,6 +259,7 @@
         private System.Windows.Forms.Button btnLedRefresh;
         private System.Windows.Forms.Button btnExit;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn Column1;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn Column7;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn Column2;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn Column3;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn Column4;

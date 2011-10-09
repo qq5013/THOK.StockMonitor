@@ -37,7 +37,7 @@ namespace THOK.AS.Stocking.Dao
         /// <returns></returns>
         public DataTable FindScannerStateByIndexNo(string indexNo,string viewName)
         {
-            string sql = string.Format(@"SELECT ROW_INDEX,LINECODE,CIGARETTECODE,CIGARETTENAME,CHANNELCODE,SORTCHANNELCODE,CHANNELNAME,
+            string sql = string.Format(@"SELECT ROW_INDEX,LINECODE,STOCKOUTID,CIGARETTECODE,CIGARETTENAME,CHANNELCODE,SORTCHANNELCODE,CHANNELNAME,
                             CASE CHANNELTYPE 
                                 WHEN '3' THEN '通道机'
                                 WHEN '2' THEN '立式机'
@@ -81,7 +81,7 @@ namespace THOK.AS.Stocking.Dao
         /// <returns></returns>
         public DataTable FindLedStateByIndexNo(string indexNo, string viewName)
         {
-            string sql = string.Format(@"SELECT ROW_INDEX,LINECODE,CIGARETTECODE,CIGARETTENAME,CHANNELCODE,SORTCHANNELCODE,CHANNELNAME,
+            string sql = string.Format(@"SELECT ROW_INDEX,LINECODE,STOCKOUTID,CIGARETTECODE,CIGARETTENAME,CHANNELCODE,SORTCHANNELCODE,CHANNELNAME,
                             CASE CHANNELTYPE 
                                 WHEN '3' THEN '通道机'
                                 WHEN '2' THEN '立式机'
@@ -127,7 +127,7 @@ namespace THOK.AS.Stocking.Dao
         /// <returns></returns>
         public DataTable FindOrderStateByIndexNo(string indexNo,string viewName)
         {
-            string sql = string.Format(@"SELECT ROW_INDEX,LINECODE,CIGARETTECODE,CIGARETTENAME,CHANNELCODE,SORTCHANNELCODE,CHANNELNAME,
+            string sql = string.Format(@"SELECT ROW_INDEX,LINECODE,STOCKOUTID,CIGARETTECODE,CIGARETTENAME,CHANNELCODE,SORTCHANNELCODE,CHANNELNAME,
                             CASE CHANNELTYPE 
                                 WHEN '3' THEN '通道机'
                                 WHEN '2' THEN '立式机'
