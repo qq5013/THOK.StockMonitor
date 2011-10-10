@@ -220,7 +220,7 @@ namespace THOK.AS.Stocking.View
                             //生成入库请求任务数据
                             Context.ProcessDispatcher.WriteToProcess("StockInRequestProcess", "FirstBatch", null);
                             //生成补货请求任务数据
-                            Context.ProcessDispatcher.WriteToProcess("SupplyFirstRequestProcess", "FirstBatch", null);                   
+                            //Context.ProcessDispatcher.WriteToProcess("SupplyFirstRequestProcess", "FirstBatch", null);                   
                         }
                         else
                             MessageBox.Show("没有补货计划数据！", "消息", MessageBoxButtons.OK, MessageBoxIcon.Information);
