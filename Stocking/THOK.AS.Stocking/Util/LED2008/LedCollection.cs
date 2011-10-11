@@ -117,7 +117,7 @@ namespace THOK.AS.Stocking.Util.LED2008
                 Text.FontInfo.bFontItaic = false;
                 Text.FontInfo.bFontUnderline = false;
                 Text.FontInfo.colorFont = colorFont;
-                Text.FontInfo.iFontSize = 12;
+                Text.FontInfo.iFontSize =9;
                 Text.FontInfo.strFontName = "ËÎÌו";
                 Text.FontInfo.iAlignStyle = 0;
                 Text.FontInfo.iVAlignerStyle = 0;
@@ -160,7 +160,7 @@ namespace THOK.AS.Stocking.Util.LED2008
                 SingleText.FontInfo.bFontItaic = false;
                 SingleText.FontInfo.bFontUnderline = false;
                 SingleText.FontInfo.colorFont = colorFont;
-                SingleText.FontInfo.iFontSize = 12;
+                SingleText.FontInfo.iFontSize = 9;
                 SingleText.PartInfo.FrameColor = colorFont;
                 SingleText.FontInfo.strFontName = "ËÎÌו";
                 SingleText.MoveSet.bClear = false;
