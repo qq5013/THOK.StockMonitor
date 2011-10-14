@@ -63,7 +63,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
 
         internal bool Check(string barcode)
         {
-            if (barcode.Length==32)
+            if (barcode.Length==32 || barcode.Length==6)
             {
                 string sql = "SELECT * FROM {0} WHERE ROW_INDEX = {1}";
                 sql = string.Format(sql, dataView, this.index + 1);
@@ -232,7 +232,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
                 if (dispatcher.WriteToService(plcServicesName, releaseItemName, data))
                 {
                     result = true;
-                    Logger.Info(string.Format("{0}号扫码器，写分流数据成功，目标：'{1}'", stateItemCode, data[0]));
+                    Logger.Info(string.Format("{0}号扫码器，写分流数据成功，目标：'{1}'流水号：'{2}'", stateItemCode, data[0],this.index));
                 }
             }
             else
