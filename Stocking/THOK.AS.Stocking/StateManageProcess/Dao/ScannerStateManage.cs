@@ -68,7 +68,10 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
                 string sql = "SELECT * FROM {0} WHERE ROW_INDEX = {1}";
                 sql = string.Format(sql, dataView, this.index + 1);
                 DataTable table = ExecuteQuery(sql).Tables[0];
-                barcode = barcode.Substring(2, 6);
+                if (barcode.Length==32)
+                {
+                    barcode = barcode.Substring(2, 6);
+                }
                 if (table.Rows[0]["BARCODE"].ToString() == barcode)
                     return true;
                 else
