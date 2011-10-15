@@ -22,6 +22,12 @@ namespace THOK.AS.Stocking.StockOutProcess
 
                 object obj = ObjectUtil.GetObject(stateItem.State);
                 int sortNo = obj != null ? Convert.ToInt32(obj) : 0;
+
+                if (sortNo==0)
+                {
+                    return;
+                }
+
                 sortNo = sortNo + Convert.ToInt32(Context.Attributes["SupplyAheadCount-" + lineCode + "-" + channelGroup + "-" + channelType]);
 
                 needNotify = AddNextSupply(lineCode, channelGroup, channelType, sortNo);
