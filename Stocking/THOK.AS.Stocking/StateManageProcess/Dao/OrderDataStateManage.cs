@@ -93,6 +93,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
         public bool WriteToPlc()
         {
             bool result = false;
+            string channelCodes = "";
             int quantity =Convert.ToInt32(this.orderQuantity);
             
             //给PLC写订单数据 
@@ -105,6 +106,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             foreach (DataRow  row in table.Rows)
             {
                 data.Push(Convert.ToInt32(row["CHANNELCODE"]));
+                channelCodes = channelCodes + "|" + (Convert.ToInt32(row["CHANNELCODE"])).ToString();
                 this.index++;
             }
 
@@ -129,7 +131,7 @@ namespace THOK.AS.Stocking.StateManageProcess.Dao
             }
             if (result && table.Rows.Count > 0)
             {
-                 Logger.Info(string.Format("{0} 号订单请求，订单数据写入成功流水号：[{1}]",stateItemCode,index));
+                Logger.Info(string.Format("{0} 号订单请求，订单数据写入成功!流水号：[{1}]；总件数：[{2}]；数据：[{3}|]", stateItemCode,index,table.Rows.Count,channelCodes));
             }
             return result;
         }
