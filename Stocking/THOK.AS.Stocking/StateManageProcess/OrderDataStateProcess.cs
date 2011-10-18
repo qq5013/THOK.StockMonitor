@@ -10,6 +10,8 @@ namespace THOK.AS.Stocking.StateManageProcess
 {
     class OrderDataStateProcess:AbstractProcess
     {
+        private bool isStockOut = false;
+
         /// <summary>
         /// 状态管理器列表
         /// </summary>
@@ -55,6 +57,22 @@ namespace THOK.AS.Stocking.StateManageProcess
                         {
                             orderDataStateManageItem.MoveTo(1);
                         }
+                        return;
+                    }
+
+                    if (stateItem.ItemName == "Start")
+                    {
+                        isStockOut = true;
+                        return;
+                    }
+                    if (stateItem.ItemName == "Stop")
+                    {
+                        isStockOut = false;
+                        return;
+                    }
+
+                    if (!isStockOut)
+                    {
                         return;
                     }
 

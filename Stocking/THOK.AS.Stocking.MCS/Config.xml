@@ -58,7 +58,7 @@
     <Process Name="LEDProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StockInProcess.LEDProcess" />
     <Process Name="ViewProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StockInProcess.ViewProcess" />
     <!--状态管理器添加-->
-    <Process Name="OrderDataStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.OrderDataStateProcess" Suspend="true">
+    <Process Name="OrderDataStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.OrderDataStateProcess">
       <Item ServiceName="StockPLC_01" ItemName="01_OrderDataMoveNext" />
       <Item ServiceName="StockPLC_01" ItemName="01_OrderDataMoveTo" />
       <Item ServiceName="StockPLC_02" ItemName="02_OrderDataMoveNext" />

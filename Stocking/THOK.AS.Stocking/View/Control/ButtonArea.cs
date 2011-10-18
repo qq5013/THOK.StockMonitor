@@ -81,7 +81,7 @@ namespace THOK.AS.Stocking.View
         {
             try
             {
-                Context.Processes["OrderDataStateProcess"].Resume();
+                Context.ProcessDispatcher.WriteToProcess("OrderDataStateProcess", "Start", null);
                 Context.ProcessDispatcher.WriteToProcess("LEDProcess", "Refresh", null);
                 Context.ProcessDispatcher.WriteToProcess("LedStateProcess", "Refresh", null);
                 SwitchStatus(true);
@@ -96,7 +96,7 @@ namespace THOK.AS.Stocking.View
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            Context.Processes["OrderDataStateProcess"].Suspend();
+            Context.ProcessDispatcher.WriteToProcess("OrderDataStateProcess", "Stop", null);
             SwitchStatus(false);
             timer1.Enabled = false;
         }
