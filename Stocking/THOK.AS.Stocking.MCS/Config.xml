@@ -14,7 +14,9 @@
     <Attribute Name="IsMerge" Value="true" />
     <Attribute Name="StockRemainQuantity" Value="0" />
     <Attribute Name="IsActiveLeds" Value="1,192.168.1.10;2,192.168.1.11;3,192.168.1.12" />
-    <Attribute Name="StockInRequestRemainQuantity" Value="10" />
+    <Attribute Name="StockInRequestRemainQuantity" Value="8" />
+    <Attribute Name="StockInStackQuantity" Value="4" />
+    <Attribute Name="StockInCapacityQuantity" Value="24" />
     <Attribute Name="SupplyAheadCount-01-1-2" Value="10" />
     <Attribute Name="SupplyAheadCount-01-2-2" Value="12" />
     <Attribute Name="SupplyAheadCount-01-1-3" Value="12" />

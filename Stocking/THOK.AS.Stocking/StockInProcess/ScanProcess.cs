@@ -242,7 +242,7 @@ namespace THOK.AS.Stocking.StockInProcess
                 if (barcode != pBarcode && pBarcode != string.Empty)
                 {
                     //是否可换品牌，进行入库
-                    if (pQuantity == 5)
+                    if (pQuantity == Convert.ToInt32(Context.Attributes["StockInStackQuantity"]))
                     {
                         //可换品牌入库（未完成的品牌可，下次再重入库）
                         stockInTable = stockInDao.FindCigarette(barcode);
@@ -264,7 +264,7 @@ namespace THOK.AS.Stocking.StockInProcess
                                 stockInTable = stockInDao.FindCigarette(barcode);
 
                                 scannerParameters.SetParameter(scannerCode, "Barcode", "");
-                                scannerParameters.SetParameter(scannerCode, "Quantity", 5);
+                                scannerParameters.SetParameter(scannerCode, "Quantity", Convert.ToInt32(Context.Attributes["StockInStackQuantity"]));
                             }
                             else
                             {
@@ -332,7 +332,7 @@ namespace THOK.AS.Stocking.StockInProcess
                         //更新扫码器参数信息
                         if (pBarcode == barcode)
                         {
-                            if (pQuantity < 5)
+                            if (pQuantity < Convert.ToInt32(Context.Attributes["StockInStackQuantity"]))
                             {
                                 scannerParameters.SetParameter(scannerCode, "Quantity", pQuantity + 1);
                             }
@@ -351,7 +351,7 @@ namespace THOK.AS.Stocking.StockInProcess
                         if (Convert.ToInt32(stockInTable.Rows[0]["QUANTITY"]) <= 1)
                         {
                             scannerParameters.SetParameter(scannerCode, "Barcode", "");
-                            scannerParameters.SetParameter(scannerCode, "Quantity", 5);
+                            scannerParameters.SetParameter(scannerCode, "Quantity", Convert.ToInt32(Context.Attributes["StockInStackQuantity"]));
                         }
                         
                         WriteToProcess("LEDProcess", "Refresh", null);

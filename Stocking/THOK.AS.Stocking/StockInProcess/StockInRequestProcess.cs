@@ -61,9 +61,9 @@ namespace THOK.AS.Stocking.StockInProcess
                         DataTable channelTable = channelDao.FindChannelForCigaretteCode(row["CigaretteCode"].ToString());
                         int stockRemainQuantity = Convert.ToInt32(channelTable.Rows[0]["REMAINQUANTITY"]);
 
-                        if (Convert.ToInt32(row["Quantity"]) + stockRemainQuantity >= 30)
+                        if (Convert.ToInt32(row["Quantity"]) + stockRemainQuantity >= Convert.ToInt32(Context.Attributes["StockInCapacityQuantity"]))
                         {
-                            StockInRequest(row["CigaretteCode"].ToString(), 30, stockRemainQuantity);
+                            StockInRequest(row["CigaretteCode"].ToString(), Convert.ToInt32(Context.Attributes["StockInCapacityQuantity"]), stockRemainQuantity);
                         }
                         else if (Convert.ToInt32(row["Quantity"]) + stockRemainQuantity > 0)
                         {
@@ -95,9 +95,9 @@ namespace THOK.AS.Stocking.StockInProcess
                 {
                     DataRow row = cigaretteTable.Rows[0];
 
-                    if (Convert.ToInt32(row["Quantity"]) >= 30)
+                    if (Convert.ToInt32(row["Quantity"]) >= Convert.ToInt32(Context.Attributes["StockInCapacityQuantity"]))
                     {
-                        StockInRequest(row["CigaretteCode"].ToString(), 30,0);
+                        StockInRequest(row["CigaretteCode"].ToString(), Convert.ToInt32(Context.Attributes["StockInCapacityQuantity"]), 0);
                         Logger.Info(row["CigaretteName"].ToString() + "生成入库任务成功");
                     }
                     else if (Convert.ToInt32(row["Quantity"]) > 0)

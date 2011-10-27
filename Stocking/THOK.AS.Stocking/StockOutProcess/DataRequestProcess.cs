@@ -42,7 +42,7 @@ namespace THOK.AS.Stocking.StockOutProcess
                                 {
                                     WriteToProcess("StockInRequestProcess", "StockInRequest", outTable.Rows[i]["CIGARETTECODE"].ToString());
                                 }
-                                else if (stockInRows.Length > 0 && stockInRows.Length + Convert.ToInt32(stockInRows[0]["STOCKINQUANTITY"]) <= 30 + 1)
+                                else if (stockInRows.Length > 0 && stockInRows.Length + Convert.ToInt32(stockInRows[0]["STOCKINQUANTITY"]) <= Convert.ToInt32(Context.Attributes["StockInCapacityQuantity"]) + 1)
                                 {
                                     WriteToProcess("StockInRequestProcess", "StockInRequest", outTable.Rows[i]["CIGARETTECODE"].ToString());
                                 }
