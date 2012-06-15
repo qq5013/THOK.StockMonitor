@@ -61,7 +61,7 @@ namespace THOK.AS.Stocking.Dao
             string sql = "SELECT A.CIGARETTECODE,A.CIGARETTENAME,COUNT(*) QUANTITY" +
                          " FROM AS_SC_SUPPLY A " +
                          " LEFT JOIN V_STOCKCHANNEL B ON A.CIGARETTECODE = B.CIGARETTECODE " +
-                         " WHERE B.CHANNELTYPE = '2' " +
+                         " WHERE B.CHANNELTYPE = '2' AND A.LINECODE<>'03' " +
                          " GROUP BY A.CIGARETTECODE,A.CIGARETTENAME,B.CHANNELCODE" +
                          " ORDER BY B.CHANNELCODE";
             return ExecuteQuery(sql).Tables[0];
