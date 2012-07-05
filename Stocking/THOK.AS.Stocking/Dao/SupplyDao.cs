@@ -73,7 +73,7 @@ namespace THOK.AS.Stocking.Dao
                          " COUNT(*) + {0} - (SELECT ISNULL(SUM(INQUANTITY),0) FROM AS_STOCK_IN_BATCH WHERE CIGARETTECODE = '{1}') QUANTITY " +
                          " FROM AS_SC_SUPPLY A " +
                          " LEFT JOIN V_STOCKCHANNEL B ON A.CIGARETTECODE = B.CIGARETTECODE " +
-                         " WHERE B.CHANNELTYPE = '2' AND A.CIGARETTECODE = '{1}'" +
+                         " WHERE B.CHANNELTYPE = '2' AND A.CIGARETTECODE = '{1}'AND A.LINECODE<>'03'" +
                          " GROUP BY A.CIGARETTECODE,A.CIGARETTENAME";
             return ExecuteQuery(string.Format(sql, quantity, cigaretteCode)).Tables[0];
         }
