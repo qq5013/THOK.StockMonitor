@@ -13,21 +13,19 @@
     <Attribute Name="SupplyToSortLine" Value="00" />
     <Attribute Name="IsMerge" Value="true" />
     <Attribute Name="StockRemainQuantity" Value="0" />
-    <Attribute Name="IsActiveLeds" Value="1,192.168.1.10;2,192.168.1.11;3,192.168.1.12" />
-    <Attribute Name="StockInRequestRemainQuantity" Value="8" />
-    <Attribute Name="StockInStackQuantity" Value="4" />
-    <Attribute Name="StockInCapacityQuantity" Value="24" />
+    <Attribute Name="IsActiveLeds" Value="1,192.168.1.11;2,192.168.1.12;3,192.168.1.1;4,192.168.1.2;5,192.168.1.3;6,192.168.1.4;7,192.168.1.5;&#xD;&#xA;8,192.168.1.6;9,192.168.1.7;10,192.168.1.8;11,192.168.1.9;12,192.168.1.10" />
+    <Attribute Name="StockInRequestRemainQuantity" Value="10" />
+    <Attribute Name="StockInStackQuantity" Value="5" />
+    <Attribute Name="StockInCapacityQuantity" Value="30" />
     <Attribute Name="SupplyAheadCount-01-1-2" Value="10" />
-    <Attribute Name="SupplyAheadCount-01-2-2" Value="12" />
-    <Attribute Name="SupplyAheadCount-01-1-3" Value="12" />
-    <Attribute Name="SupplyAheadCount-01-2-3" Value="18" />
-
-    <Attribute Name="SupplyAheadCount-02-1-2" Value="10" />
-    <Attribute Name="SupplyAheadCount-02-2-2" Value="12" />
-    <Attribute Name="SupplyAheadCount-02-1-3" Value="12" />
-    <Attribute Name="SupplyAheadCount-02-2-3" Value="18" />
-
-    <Attribute Name="SupplyAheadCount-03-1-3" Value="18" />
+    <Attribute Name="SupplyAheadCount-01-2-2" Value="5" />
+    <Attribute Name="SupplyAheadCount-01-1-3" Value="13" />
+    <Attribute Name="SupplyAheadCount-01-2-3" Value="13" />
+    <Attribute Name="SupplyAheadCount-02-1-2" Value="5" />
+    <Attribute Name="SupplyAheadCount-02-2-2" Value="7" />
+    <Attribute Name="SupplyAheadCount-02-1-3" Value="13" />
+    <Attribute Name="SupplyAheadCount-02-2-3" Value="15" />
+    <Attribute Name="SupplyAheadCount-03-2-5" Value="17" />
   </Attributes>
   <Services>
     <Service Name="StockPLC_01" Type="THOK.MCP.Service.Siemens.dll, THOK.MCP.Service.Siemens.OPCService" ConfigFile="StockPLC_01.xml" />
@@ -44,8 +42,6 @@
       <Item ServiceName="StockPLC_02" ItemName="01_2_3" />
       <Item ServiceName="StockPLC_02" ItemName="02_1_3" />
       <Item ServiceName="StockPLC_02" ItemName="02_2_3" />
-      <Item ServiceName="StockPLC_02" ItemName="03_1_3" />
-      <Item ServiceName="StockPLC_02" ItemName="03_2_3" />
     </Process>
     <Process Name="SupplyFirstRequestProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StockOutProcess.SupplyFirstRequestProcess">
     </Process>
@@ -67,10 +63,46 @@
       <Item ServiceName="StockPLC_02" ItemName="02_OrderDataMoveTo" />
     </Process>
     <Process Name="LedStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.LedStateProcess">
+      <Item ServiceName="StockPLC_02" ItemName="01_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="01_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="01_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="01_ReleaseLed" />
       <Item ServiceName="StockPLC_02" ItemName="02_LedMoveNext" />
       <Item ServiceName="StockPLC_02" ItemName="02_LedMoveTo" />
       <Item ServiceName="StockPLC_02" ItemName="02_LedShowData" />
       <Item ServiceName="StockPLC_02" ItemName="02_ReleaseLed" />
+      <Item ServiceName="StockPLC_02" ItemName="03_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="03_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="03_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="03_ReleaseLed" />
+      <Item ServiceName="StockPLC_02" ItemName="04_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="04_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="04_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="04_ReleaseLed" />
+      <Item ServiceName="StockPLC_02" ItemName="05_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="05_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="05_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="05_ReleaseLed" />
+      <Item ServiceName="StockPLC_02" ItemName="06_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="06_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="06_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="06_ReleaseLed" />
+      <Item ServiceName="StockPLC_02" ItemName="07_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="07_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="07_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="07_ReleaseLed" />
+      <Item ServiceName="StockPLC_02" ItemName="08_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="08_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="08_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="08_ReleaseLed" />
+      <Item ServiceName="StockPLC_02" ItemName="09_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="09_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="09_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="09_ReleaseLed" />
+      <Item ServiceName="StockPLC_02" ItemName="10_LedMoveNext" />
+      <Item ServiceName="StockPLC_02" ItemName="10_LedMoveTo" />
+      <Item ServiceName="StockPLC_02" ItemName="10_LedShowData" />
+      <Item ServiceName="StockPLC_02" ItemName="10_ReleaseLed" />
     </Process>
     <Process Name="ScannerStateProcess" Type="THOK.AS.Stocking.dll, THOK.AS.Stocking.StateManageProcess.ScannerStateProcess">
       <Item ServiceName="StockPLC_02" ItemName="02_ScannerMoveNext" />
